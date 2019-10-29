@@ -1,8 +1,8 @@
 {**
  * templates/management/context.tpl
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * The journal settings page.
@@ -19,38 +19,34 @@
 {assign var="uuid" value=""|uniqid|escape}
 <div id="settings-context-{$uuid}">
 	<tabs>
-		<tab id="masthead" name="{translate key="manager.setup.masthead"}">
-			{help file="settings" section="context" class="pkp_help_tab"}
+		<tab id="masthead" label="{translate key="manager.setup.masthead"}">
+			{help file="settings/journal-settings" class="pkp_help_tab"}
 			<pkp-form
-				v-bind="forms.{$smarty.const.FORM_MASTHEAD}"
-				@set-fields="setFormFields"
-				@set-errors="setFormErrors"
-				@set-visible-locales="setFormVisibleLocales"
+				v-bind="components.{$smarty.const.FORM_MASTHEAD}"
+				@set="set"
 			/>
 		</tab>
-		<tab id="contact" name="{translate key="about.contact"}">
-			{help file="settings" section="context" class="pkp_help_tab"}
+		<tab id="contact" label="{translate key="about.contact"}">
+			{help file="settings/journal-settings" section="contact" class="pkp_help_tab"}
 			<pkp-form
-				v-bind="forms.{$smarty.const.FORM_CONTACT}"
-				@set-fields="setFormFields"
-				@set-errors="setFormErrors"
-				@set-visible-locales="setFormVisibleLocales"
+				v-bind="components.{$smarty.const.FORM_CONTACT}"
+				@set="set"
 			/>
 		</tab>
-		<tab name="{translate key="section.sections"}">
-			{help file="settings" section="context" class="pkp_help_tab"}
+		<tab id="sections" label="{translate key="section.sections"}">
+			{help file="settings/journal-settings" section="sections" class="pkp_help_tab"}
 			{capture assign=sectionsGridUrl}{url router=$smarty.const.ROUTE_COMPONENT component="grid.settings.sections.SectionGridHandler" op="fetchGrid" escape=false}{/capture}
 			{load_url_in_div id="sectionsGridContainer" url=$sectionsGridUrl}
 		</tab>
-		<tab id="categories" name="{translate key="grid.category.categories"}">
-			{help file="settings" section="context" class="pkp_help_tab"}
+		<tab id="categories" label="{translate key="grid.category.categories"}">
+			{help file="settings/journal-settings" section="categories" class="pkp_help_tab"}
 			{capture assign=categoriesUrl}{url router=$smarty.const.ROUTE_COMPONENT component="grid.settings.category.CategoryCategoryGridHandler" op="fetchGrid" escape=false}{/capture}
 			{load_url_in_div id="categoriesContainer" url=$categoriesUrl}
 		</tab>
 	</tabs>
 </div>
 <script type="text/javascript">
-	pkp.registry.init('settings-context-{$uuid}', 'Container', {$settingsData|json_encode});
+	pkp.registry.init('settings-context-{$uuid}', 'SettingsContainer', {$settingsData|json_encode});
 </script>
 
 {include file="common/footer.tpl"}

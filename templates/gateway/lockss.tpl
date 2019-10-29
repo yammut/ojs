@@ -1,8 +1,8 @@
 {**
  * templates/gateway/lockss.tpl
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Adapted from lockss.tpl by Martin Paul Eve
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -117,7 +117,7 @@
 
 
 <a href="http://www.lockss.org/"><img src="{$baseUrl}/templates/images/lockss.gif" style="border: 0;" alt="LOCKSS" /></a>
-<p>LOCKSS system has permission to ingest, preserve, and serve this Archival Unit.</p>
+<p>LOCKSS system has permission to collect, preserve, and serve this Archival Unit.</p>
 
 <p><a href="http://pkp.sfu.ca/"><img src="{$baseUrl}/lib/pkp/templates/images/pkp.gif" style="border: 0;" alt="The Public Knowledge Project" /></a></p>
 <p>Open Journal Systems was developed by the Public Knowledge Project.</p>

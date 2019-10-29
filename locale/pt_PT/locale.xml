@@ -4,8 +4,8 @@
 <!--
   * locale/pt_PT/locale.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=OJS:_Portuguese_(pt_PT)
   * Localization strings.
@@ -71,7 +71,10 @@
 	<message key="section.abbreviation">Abreviatura</message>
 	<message key="section.abbreviation.example">(Por exemplo, Artigos=ART)</message>
 	<!-- Common Article Terms -->
+	<message key="article.article">Artigo</message>
 	<message key="article.articles">Artigos</message>
+	<message key="common.publication">Artigo</message>
+	<message key="common.publications">Artigos</message>
 	<message key="article.submissionId">ID da Submissão</message>
 	<message key="article.title">Título</message>
 	<message key="article.authors">Autores</message>
@@ -123,7 +126,6 @@
 	<message key="submissions.step1">Passo 1</message>
 	<message key="submissions.step3">Passo 3</message>
 	<message key="submissions.queuedReview">Em Revisão</message>
-	<message key="submissions.scheduled">Agendado</message>
 	<message key="submissions.published">Publicado</message>
 	<message key="submissions.initial">Inicial</message>
 	<message key="submissions.proofread">Ler Prova</message>
@@ -566,8 +568,6 @@ O servidor actualmente tem suporte a mbstring: <strong>{$supportsMBString}</stro
 	<message key="log.author.documentRevised">{$authorName} reviu o artigo {$submissionId}. O novo ID é {$fileId}.</message>
 	<message key="log.review.reviewerUnassigned">{$reviewerName} liberada(o) da ronda {$round} de revisão da submissão {$submissionId}.</message>
 	<message key="log.review.reviewInitiated">A ronda {$round} de revisão da submissão {$submissionId}, designada a {$reviewerName}, foi iniciada.</message>
-	<message key="log.review.reviewReinitiated">A ronda {$round} de revisão da submissão {$submissionId}, designada a {$reviewerName}, foi iniciada novamente.</message>
-	<message key="log.review.reviewCleared">{$reviewerName} foi liberada(o) da ronda {$round} de revisão da submissão {$submissionId}.</message>
 	<message key="log.review.reviewerRated">{$reviewerName} recebeu classificação para a ronda {$round} de revisão da submissão {$submissionId}.</message>
 	<message key="log.review.reviewDueDateSet">Foi definido para {$dueDate} o prazo para conclusão da ronda {$round} de revisão da submissão {$submissionId}, designada a {$reviewerName}.</message>
 	<message key="log.review.reviewRecommendationSet">{$reviewerName} definiu a recomendação para a ronda {$round} de revisão da submissão {$submissionId}.</message>
@@ -718,7 +718,6 @@ Autores que publicam nesta revista concordam com os seguintes termos:
 	<message key="article.fontSize.medium.altText">Média</message>
 	<message key="article.fontSize.large.altText">Maior</message>
 	<message key="journal.issn">ISSN</message>
-	<message key="article.article">Artigo</message>
 	<message key="user.manageMySubscriptions">Gerir Minhas Subscrições</message>
 	<message key="subscriptionTypes.currency">Moeda</message>
 	<message key="subscriptionTypes.year">ano</message>
@@ -792,7 +791,6 @@ Pode-se opcionalmente informar o motivo pelo qual está sendo desactivado o regi
 	<message key="payment.subscription.purchase">Adquirir Subscrições</message>
 	<message key="installer.installApplication">Instalar o sistema</message>
 	<message key="installer.upgradeApplication">Actualizar o sistema</message>
-	<message key="notification.type.articleSubmitted">Um novo artigo, "{$title}", foi submetido.</message>
 	<message key="notification.type.editing">Editando eventos</message>
 	<message key="notification.type.editorDecisionComment">Foi produzido um comentário sobre a decisão editorial de "{$title}".</message>
 	<message key="notification.type.galleyModified">A versão para publicação foi alterada para "{$title}".</message>
@@ -933,7 +931,6 @@ Pode-se opcionalmente informar o motivo pelo qual está sendo desactivado o regi
 	<message key="payment.notFound">Foi solicitado um pagamento, mas o prazo expirou. Contacte o Gestor da Revista para mais informação.</message>
 	<message key="navigation.subscriptions">Subscrições</message>
 	<message key="log.editor.submissionExpedited">{$editorName} tomou o processo de edição do artigo {$submissionId}.</message>
-	<message key="notification.type.publicationScheduled">Esta submissão foi agendada para publicação.</message>
 	<message key="log.editor.recommendation">O editor {$editorName} registou uma recomendação ({$decision}) para o artigo {$submissionId}.</message>
 	<message key="user.reviewerPrompt.optin">Sim, quero ser contactado com pedidos de revisão a submissões para esta revista.</message>
 	<message key="user.register.form.emailConsentAllContexts">Sim, quero ser notificado de novas publicações e anúncios para todas as revistas em que me registei.</message>

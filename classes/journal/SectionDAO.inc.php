@@ -3,8 +3,8 @@
 /**
  * @file classes/journal/SectionDAO.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SectionDAO
@@ -297,13 +297,8 @@ class SectionDAO extends PKPSectionDAO {
 		$subEditorsDao->deleteBySectionId($sectionId, $contextId);
 
 		// Remove articles from this section
-		$articleDao = DAORegistry::getDAO('ArticleDAO');
-		$articleDao->removeArticlesFromSection($sectionId);
-
-		// Delete published article entries from this section -- they must
-		// be re-published.
-		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-		$publishedArticleDao->deletePublishedArticlesBySectionId($sectionId);
+		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+		$submissionDao->removeSubmissionsFromSection($sectionId);
 
 		if (isset($contextId) && !$this->sectionExists($sectionId, $contextId)) return false;
 		$this->update('DELETE FROM section_settings WHERE section_id = ?', (int) $sectionId);
@@ -356,9 +351,23 @@ class SectionDAO extends PKPSectionDAO {
 	 * @return array
 	 */
 	function getByIssueId($issueId) {
+		$issue = Services::get('issue')->get($issueId);
+		$submissionsIterator = Services::get('submission')->getMany([
+			'contextId' => $issue->getJournalId(),
+			'issueIds' => $issueId,
+		]);
+		$sectionIds = [];
+		foreach ($submissionsIterator as $submission) {
+			$sectionIds[] = $submission->getCurrentPublication()->getData('sectionId');
+		}
+		$sectionIds = array_unique($sectionIds);
 		$result = $this->retrieve(
-			'SELECT DISTINCT s.*, COALESCE(o.seq, s.seq) AS section_seq FROM sections s, published_submissions pa, submissions a LEFT JOIN custom_section_orders o ON (a.section_id = o.section_id AND o.issue_id = ?) WHERE s.section_id = a.section_id AND pa.submission_id = a.submission_id AND pa.issue_id = ? ORDER BY section_seq',
-			array((int) $issueId, (int) $issueId)
+			'SELECT s.*, COALESCE(o.seq, s.seq) AS section_seq
+				FROM sections s
+				LEFT JOIN custom_section_orders o ON (s.section_id = o.section_id AND o.issue_id = ?)
+				WHERE s.section_id IN (' . substr(str_repeat('?,', count($sectionIds)), 0, -1) . ')
+				ORDER BY section_seq',
+			array_merge([(int) $issueId], $sectionIds)
 		);
 
 		$returner = array();

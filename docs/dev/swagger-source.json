@@ -32,6 +32,14 @@
 			"description": "Only admins can access these endpoints, which should be accessed using `*` instead of the journal path."
 		},
 		{
+			"name": "Email Templates",
+			"description": "Only admins and journal managers can access these endpoints."
+		},
+		{
+			"name": "Statistics",
+			"description": "Only admins and journal managers can access these endpoints."
+		},
+		{
 			"name": "Temporary Files",
 			"description": "A special endpoint to be used for handling file uploads. See the [API Usage Guide](/dev/api) for more information."
 		},
@@ -55,6 +63,7 @@
 				}
 			}
 		},
+		"EmailTemplate": "emailTemplate",
 		"Galley": "galley",
 		"InvalidParametersResponse": {
 			"type": "object",
@@ -75,6 +84,50 @@
 			"example": {
 				"en_US": "Filename",
 				"fr_CA": "Nom de fichier"
+			}
+		},
+		"PublicationStats": {
+			"type": "object",
+			"description": "The total abstract and galley views for a published submission.",
+			"properties": {
+				"abstractViews": {
+					"type": "integer"
+				},
+				"galleyViews": {
+					"type": "integer"
+				},
+				"pdfViews": {
+					"type": "integer"
+				},
+				"htmlViews": {
+					"type": "integer"
+				},
+				"otherViews": {
+					"type": "integer"
+				},
+				"publication": {
+					"type": "object",
+					"properties": {
+						"_href": {
+							"type": "string"
+						},
+						"fullTitle": {
+							"$ref": "#/definitions/LocaleObject"
+						},
+						"id": {
+							"type": "integer"
+						},
+						"shortAuthorString": {
+							"type": "string"
+						},
+						"urlPublished": {
+							"type": "string"
+						},
+						"urlWorkflow": {
+							"type": "string"
+						}
+					}
+				}
 			}
 		},
 		"ReviewRound": "reviewRound",
@@ -124,6 +177,9 @@
 				"reviewsCompleted": {
 					"type": "integer"
 				},
+				"reviewsCancelled": {
+					"type": "integer"
+				},
 				"reviewsDeclined": {
 					"type": "integer"
 				},
@@ -145,6 +201,20 @@
 				},
 				"...": {
 					"type": "string"
+				}
+			}
+		},
+		"TimelineInterval": {
+			"type": "object",
+			"properties": {
+				"date": {
+					"type": "string"
+				},
+				"label": {
+					"type": "string"
+				},
+				"value": {
+					"type": "integer"
 				}
 			}
 		},
@@ -227,6 +297,13 @@
 						"in": "query",
 						"required": false,
 						"type": "boolean"
+					},
+					{
+						"name": "daysInactive",
+						"description": "Filter the results by those which have not had activity for the last X days.",
+						"in": "query",
+						"required": false,
+						"type": "integer"
 					},
 					{
 						"name": "sectionIds",
@@ -704,6 +781,13 @@
 						"type": "integer"
 					},
 					{
+						"name": "reviewStage",
+						"description": "Filter results by reviewers for one of the review stages in the workflow. Must be one of `WORKFLOW_STAGE_ID_INTERNAL_REVIEW` or `WORKFLOW_STAGE_ID_EXTERNAL_REVIEW`. In OJS, the review stage is `WORKFLOW_STAGE_ID_EXTERNAL_REVIEW`.",
+						"in": "query",
+						"required": false,
+						"type": "integer"
+					},
+					{
 						"name": "reviewsCompleted",
 						"description": "Filter results by those who have completed at least `X` reviews. You can also pass a range as a string formatted as `X-X`.",
 						"in": "query",
@@ -727,20 +811,6 @@
 					{
 						"name": "averageCompletion",
 						"description": "Filter results by those who complete a review assignment within `X` days on average.",
-						"in": "query",
-						"required": false,
-						"type": "integer"
-					},
-					{
-						"name": "assignedToSubmission",
-						"description": "Filter results by those assigned to this submission ID.",
-						"in": "query",
-						"required": false,
-						"type": "integer"
-					},
-					{
-						"name": "assignedToSubmissionStage",
-						"description": "Filter results by those assigned to this submission stage. Will be ignored if no `assignedToSubmission` parameter exists.",
 						"in": "query",
 						"required": false,
 						"type": "integer"
@@ -1196,6 +1266,691 @@
 						"description": "The information you submitted did not pass validation. The response will contain information about which parameters failed validation.",
 						"schema": {
 							"$ref": "#/definitions/InvalidParametersResponse"
+						}
+					}
+				}
+			}
+		},
+		"/emailTemplates": {
+			"get": {
+				"tags": [
+					"Email Templates"
+				],
+				"summary": "Get a list of email templates.",
+				"parameters": [
+					{
+						"name": "isEnabled",
+						"description": "Filter results by enabled/disabled email templates. Any truthy or falsey value will get enabled/disabled email templates.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "isCustom",
+						"description": "Filter results by those with or without a default template. A truthy value will return only templates with a key that does not match one of the default templates. A falsey value will return only templates with a key that matches one of the default templates. Note that a default template may be customized, but this does not qualify for `isCustom`. Only completely custom templates, not a customization of a default template, will be returned when `isCustom` is `true`.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "fromRoleIds",
+						"description": "Filter results by email templates sent by one or more role IDs. Separate role IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "toRoleIds",
+						"description": "Filter results by email templates received by one or more role IDs. Separate role IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "searchPhrase",
+						"description": "Filter results by a search phrase matched against the `key`, `subject`, `body`, or `description`.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "count",
+						"description": "How many results to return in a single request. Default is `30`. Max is `100`.",
+						"in": "query",
+						"required": false,
+						"type": "type"
+					},
+					{
+						"name": "offset",
+						"description": "Offset the results returned. Use this to receive subsequent pages of requests.",
+						"in": "query",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses":  {
+					"200": {
+						"description": "List of email templates.",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"itemsMax": {
+									"type": "integer"
+								},
+								"items": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/EmailTemplateSummary"
+									}
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "You do not have permission to view email templates.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+			"post":  {
+				"tags": [
+					"Email Templates"
+				],
+				"summary": "Create a new email template.",
+				"parameters": [
+					{
+						"description": "Details about the email template that should be created.",
+						"in": "body",
+						"schema": {
+							"$ref": "#/definitions/EmailTemplateEditable"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Details of the email template that was just added.",
+						"schema": {
+							"$ref": "#/definitions/EmailTemplate"
+						}
+					},
+					"400": {
+						"description": "The information you submitted did not pass validation. The response will contain information about which parameters failed validation.",
+						"schema": {
+							"$ref": "#/definitions/InvalidParametersResponse"
+						}
+					}
+				}
+			}
+		},
+		"/emailTemplates/{key}": {
+			"get": {
+				"tags": [
+					"Email Templates"
+				],
+				"summary": "Get an email template by its email key.",
+				"parameters": [
+					{
+						"name": "key",
+						"description": "Email template key",
+						"in": "path",
+						"required": true,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Email template details.",
+						"schema": {
+							"$ref": "#/definitions/EmailTemplate"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to view email templates.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested email template could not be found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Email Templates"
+				],
+				"summary": "Edit an email template.",
+				"parameters": [
+					{
+						"name": "key",
+						"description": "Email template key",
+						"in": "path",
+						"required": true,
+						"type": "integer"
+					},
+					{
+						"description": "The details about the email template that you want to edit. All params are optional. When a param is omitted, the existing value of that param will not be modified.",
+						"in": "body",
+						"schema": {
+							"$ref": "#/definitions/EmailTemplateEditable"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "The email template that was just edited with the current values after the edit has occurred.",
+						"schema": {
+							"$ref": "#/definitions/EmailTemplate"
+						}
+					},
+					"400": {
+						"description": "The information you submitted did not pass validation. The response will contain information about which parameters failed validation.",
+						"schema": {
+							"$ref": "#/definitions/InvalidParametersResponse"
+						}
+					},
+					"403": {
+						"description": "There are two possible conditions that will result in a `403` response. 1. You do not have permission to edit this email template. 2. You are an admin and you submitted changes for an email template in one context from the API endpoint of another context. To edit an email template, you must make a request to the API endpoint of that email template's context.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested email template could not be found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"Email Templates"
+				],
+				"summary": "Delete an email template. Default templates that have not been modified can not be deleted.",
+				"parameters": [
+					{
+						"name": "key",
+						"description": "Email template key",
+						"in": "path",
+						"required": true,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Details of the email template that was just deleted.",
+						"schema": {
+							"$ref": "#/definitions/EmailTemplate"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to delete this email template.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested email template could not be found. This will be returned if you try to delete a default email template that has not been modified.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/emailTemplates/restoreDefaults": {
+			"delete": {
+				"tags": [
+					"Email Templates"
+				],
+				"summary": "Delete custom templates and reset all templates to their default settings.",
+				"responses": {
+					"200": {
+						"description": "A list of template keys which were deleted or reset.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/stats/publications": {
+			"get": {
+				"tags": [
+					"Statistics"
+				],
+				"summary": "Get total views for a set of publications.",
+				"description": "Returns a list of publications ordered by their total abstract views. Includes total views by abstract, all galleys, PDF galleys, HTML galleys and other galleys.",
+				"parameters": [
+					{
+						"name": "dateStart",
+						"description": "Return stats for publications after this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateEnd",
+						"description": "Return stats for publications before this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "sectionIds",
+						"description": "Filter results by publications in these sections. Separate section IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "submissionIds",
+						"description": "Filter results by these publications. Separate submission IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "searchPhrase",
+						"description": "Filter results by publications that match this search phrase. Searches the same submission properties as the `searchPhrase` parameter in the `/submissions` endpoint.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "count",
+						"description": "How many publications to return in a single request. Default is `30`. Max is `100`.",
+						"in": "query",
+						"required": false,
+						"type": "type"
+					},
+					{
+						"name": "offset",
+						"description": "Offset the publications returned. Use this to receive subsequent pages of requests.",
+						"in": "query",
+						"required": false,
+						"type": "integer"
+					},
+					{
+						"name": "orderDirection",
+						"description": "Order the results in `ASC` or `DESC` order. Default is `DESC`.",
+						"in": "query",
+						"required": false,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of publications with their total stats during the requested period.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/PublicationStats"
+							}
+						}
+					},
+					"400": {
+						"description": "Your request was not valid. One or more of the request parameters will be invalid. The error message will contain details about the invalid parameter.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to access statistics for this journal or press.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested resource was not found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/stats/publications/abstract": {
+			"get": {
+				"tags": [
+					"Statistics"
+				],
+				"summary": "Get total abstract views in a timeline.",
+				"description": "Returns a monthly or daily timeline of abstract views for the publications which match the request parameters.",
+				"parameters": [
+					{
+						"name": "timelineInterval",
+						"description": "Return a timeline by `month` or `day`. Default is `month`.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateStart",
+						"description": "Return stats for publications after this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateEnd",
+						"description": "Return stats for publications before this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "sectionIds",
+						"description": "Filter results by publications in these sections. Separate section IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "submissionIds",
+						"description": "Filter results by these publications. Separate submission IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "searchPhrase",
+						"description": "Filter results by publications that match this search phrase. Searches the same submission properties as the `searchPhrase` parameter in the `/submissions` endpoint.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of days or months with the total stats for that day or month.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/TimelineInterval"
+							}
+						}
+					},
+					"400": {
+						"description": "Your request was not valid. One or more of the request parameters will be invalid. The error message will contain details about the invalid parameter.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to access statistics for this journal or press.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested resource was not found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/stats/publications/galley": {
+			"get": {
+				"tags": [
+					"Statistics"
+				],
+				"summary": "Get total galleys views in a timeline.",
+				"description": "Returns a monthly or daily timeline of galley views for the publications which match the request parameters.",
+				"parameters": [
+					{
+						"name": "timelineInterval",
+						"description": "Return a timeline by `month` or `day`. Default is `month`.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateStart",
+						"description": "Return stats for publications after this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateEnd",
+						"description": "Return stats for publications before this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "sectionIds",
+						"description": "Filter results by publications in these sections. Separate section IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "submissionIds",
+						"description": "Filter results by these publications. Separate submission IDs with a comma.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "searchPhrase",
+						"description": "Filter results by publications that match this search phrase. Searches the same submission properties as the `searchPhrase` parameter in the `/submissions` endpoint.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of days or months with the total stats for that day or month.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/TimelineInterval"
+							}
+						}
+					},
+					"400": {
+						"description": "Your request was not valid. One or more of the request parameters will be invalid. The error message will contain details about the invalid parameter.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to access statistics for this journal or press.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested resource was not found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/stats/publications/{submissionId}": {
+			"get": {
+				"tags": [
+					"Statistics"
+				],
+				"summary": "Get the total views of one publication.",
+				"description": "Returns a publication's total views by abstract, all galleys, PDF galleys, HTML galleys and other galleys.",
+				"parameters": [
+					{
+						"name": "dateStart",
+						"description": "Return stats for publications after this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateEnd",
+						"description": "Return stats for publications before this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "The total stats for the publication during the period requested.",
+						"schema": {
+							"$ref": "#/definitions/PublicationStats"
+						}
+					},
+					"400": {
+						"description": "Your request was not valid. One or more of the request parameters will be invalid. The error message will contain details about the invalid parameter.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to access statistics for this journal or press.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested resource was not found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/stats/publications/{submissionId}/abstract": {
+			"get": {
+				"tags": [
+					"Statistics"
+				],
+				"summary": "Get the abstract views of one publication in a timeline.",
+				"description": "Returns a monthly or daily timeline of abstract views for the requested publication.",
+				"parameters": [
+					{
+						"name": "timelineInterval",
+						"description": "Return a timeline by `month` or `day`. Default is `month`.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateStart",
+						"description": "Return stats for publications after this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateEnd",
+						"description": "Return stats for publications before this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of days or months with the total stats for that day or month.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/TimelineInterval"
+							}
+						}
+					},
+					"400": {
+						"description": "Your request was not valid. One or more of the request parameters will be invalid. The error message will contain details about the invalid parameter.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to access statistics for this journal or press.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested resource was not found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/stats/publications/{submissionId}/galley": {
+			"get": {
+				"tags": [
+					"Statistics"
+				],
+				"summary": "Get the galleys views of one publication in a timeline.",
+				"description": "Returns a monthly or daily timeline of galley views for the requested publication.",
+				"parameters": [
+					{
+						"name": "timelineInterval",
+						"description": "Return a timeline by `month` or `day`. Default is `month`.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateStart",
+						"description": "Return stats for publications after this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "dateEnd",
+						"description": "Return stats for publications before this date.",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of days or months with the total stats for that day or month.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/TimelineInterval"
+							}
+						}
+					},
+					"400": {
+						"description": "Your request was not valid. One or more of the request parameters will be invalid. The error message will contain details about the invalid parameter.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"403": {
+						"description": "You do not have permission to access statistics for this journal or press.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "The requested resource was not found.",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
 						}
 					}
 				}

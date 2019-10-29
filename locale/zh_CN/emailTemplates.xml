@@ -4,8 +4,8 @@
 <!--
   * locale/zh_CN/emailTemplates.xml
   *
-  * Copyright (c) 2014-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2014-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized email templates XML file.
@@ -167,9 +167,57 @@
 稿件网址：{$submissionUrl}<br />
 用户名称：{$editorUsername}<br />
 <br />
-谢谢您<br />
-{$editorialContactSignature}]]></body>
+谢谢您]]></body>
 		<description>这封电子邮件通知一个区段编辑说，编辑已经指派他们透过编辑流程来审查一份稿件。邮件中含有关于稿件以及如何进入期刊网站的信息。</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_REMIND_AUTO">
+		<subject>邀请您审查稿件</subject>
+		<body><![CDATA[{$reviewerName}您好：<br />
+<br />
+《{$contextName}》的编辑团队相信您是投稿到本期刊之稿件〈{$submissionTitle}〉的最佳审查人选。该份稿件的摘要如下，而我们希望您会考虑进行这份对我们来说相当重要的一个工作。<br />
+<br />
+无论您是否接受审查工作与否，都请在{$responseDueDate}之前登入这个期刊网站，同时检阅这份稿件并且记录您的审查意见和编辑建议。网站为：{$contextUrl}<br />
+<br />
+请注意审查工作的期限为：{$reviewDueDate}。<br />
+<br />
+如果您没有您在这个期刊网站的用户帐号和密码。您可以使用这个链接去重新设定您的密码（该密码会和您的用户帐号名称一起电邮给您）：{$passwordResetUrl}<br />
+<br />
+稿件网址：{$submissionReviewUrl}<br />
+<br />
+非常感谢您考虑我们的邀请。<br />
+<br />
+{$editorialContactSignature}<br />
+<br />
+<br />
+<br />
+〈{$submissionTitle}〉<br />
+<br />
+<br />
+{$submissionAbstract}]]></body>
+		<description>这封电子邮件是由区段编辑寄发给审查人一份邀请函，询问审查人接受或婉谢一份稿件的审查工作。邮件中含有关于稿件标题和摘要的信息，一个审查工作到期日，以及如何访问稿件的说明信息。在「期刊设定」之步骤2中选择「标准审查流程」选项时，才会用到这份消息。(否则请见：REVIEW_REQUEST_ATTACHED.)</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_REMIND_AUTO_ONECLICK">
+		<subject>审稿请求</subject>
+		<body><![CDATA[{$reviewerName}:<br />
+<br />
+《{$contextName}》的编辑团队相信您是投稿到本期刊之稿件〈{$submissionTitle}〉的最佳审查人选。该份稿件的摘要如下，而我们希望您会考虑进行这项对我们来说相当重要的工作。<br />
+<br />
+无论您是否接受审查工作与否，都请在{$responseDueDate}之前登入这个期刊网站，同时检阅这份稿件并且记录您的审查意见和编辑建议。<br />
+<br />
+请注意审查工作的期限为：{$reviewDueDate}。<br />
+<br />
+稿件网址：{$submissionReviewUrl}<br />
+<br />
+非常感谢您考虑我们的邀请。<br />
+{$editorialContactSignature}<br />
+<br />
+<br />
+<br />
+〈{$submissionTitle}〉<br />
+<br />
+<br />
+{$submissionAbstract}]]></body>
+		<description>这封电子邮件这封电子邮件是由区段编辑寄发给审查人一份邀请函，询问审查人接受或婉谢一份稿件的审查工作。邮件中含有关于稿件标题和摘要的信息，一个审查工作到期日，以及如何访问稿件的说明信息。在「期刊设定」之步骤2中选择「标准审查流程」选项，并且启用「审查人一点即往」的功能，才会用到这份消息。</description>
 	</email_text>
 	<email_text key="REVIEW_REQUEST">
 		<subject>邀请您审查稿件</subject>
@@ -243,9 +291,7 @@
 <br />
 出于种种考量，我们目前已经取消了邀请您进行投稿《{$contextName}》之稿件〈{$submissionTitle}〉的审查工作。造成您的不便，我们感到十分抱歉，同时我们希望在未来仍能够请您协助审查这份期刊的稿件。<br />
 <br />
-如果您有任何问题，请与我们联络。<br />
-<br />
-{$editorialContactSignature}]]></body>
+如果您有任何问题，请与我们联络。]]></body>
 		<description>这封电子邮件是由区段编辑寄给已经在进行审稿工作的审查人，通知他们说审查工作已经被取消了。</description>
 	</email_text>
 	<email_text key="REVIEW_CONFIRM">
@@ -270,9 +316,7 @@
 		<subject>文章审查感谢函</subject>
 		<body><![CDATA[{$reviewerName}:<br />
 <br />
-感谢您为《{$contextName}》完成了稿件〈{$submissionTitle}〉的审查工作。我们非常感激您对我们出版文章之品质的重要贡献。<br />
-<br />
-{$editorialContactSignature}]]></body>
+感谢您为《{$contextName}》完成了稿件〈{$submissionTitle}〉的审查工作。我们非常感激您对我们出版文章之品质的重要贡献。]]></body>
 		<description>这封电子邮件是由一位区段编辑发出，确认收到已完成审查工作的回条，并感谢审查人之贡献。</description>
 	</email_text>
 	<email_text key="REVIEW_REMIND">
@@ -340,10 +384,7 @@
 		<body><![CDATA[{$authorName}:<br />
 我们对于您在《{$contextName}》提交的〈{$submissionTitle}〉达成一项决定。<br />
 <br />
-我们的决定是：<br />
-<br />
-{$editorialContactSignature}<br />
-]]></body>
+我们的决定是：]]></body>
 		<description>这封电子邮件是由编辑或者区段编辑发送给作者，通知他们关于他们稿件的最后决定。</description>
 	</email_text>
 	<email_text key="EDITOR_DECISION_REVISIONS">
@@ -352,10 +393,7 @@
 <br />
 我们对于您在《{$contextName}》提交的〈{$submissionTitle}〉达成一项决定。<br />
 <br />
-我们的决定是：<br />
-<br />
-{$editorialContactSignature}<br />
-]]></body>
+我们的决定是：]]></body>
 		<description>这封电子邮件是由编辑或者区段编辑发送给作者，通知他们关于他们稿件的最后决定。</description>
 	</email_text>
 	<email_text key="EDITOR_DECISION_RESUBMIT">
@@ -364,10 +402,7 @@
 <br />
 我们对于您在《{$contextName}》提交的〈{$submissionTitle}〉达成一项决定。<br />
 <br />
-我们的决定是：<br />
-<br />
-{$editorialContactSignature}<br />
-]]></body>
+我们的决定是：]]></body>
 		<description>这封电子邮件是由编辑或者区段编辑发送给作者，通知他们关于他们稿件的最后决定。</description>
 	</email_text>
 	<email_text key="EDITOR_DECISION_DECLINE">
@@ -376,10 +411,7 @@
 <br />
 我们对于您在《{$contextName}》提交的〈{$submissionTitle}〉达成一项决定。<br />
 <br />
-我们的决定是：<br />
-<br />
-{$editorialContactSignature}<br />
-]]></body>
+我们的决定是：]]></body>
 		<description>这封电子邮件是由编辑或者区段编辑发送给作者，通知他们关于他们稿件的最后决定。</description>
 	</email_text>
 	<email_text key="COPYEDIT_REQUEST">
@@ -391,9 +423,7 @@
 稿件网址：{$submissionUrl}"<br />
 用户名称：{$participantUsername}<br />
 <br />
-如果您目前无法进行这份工作，或者对这项工作有任何的疑问，请直接回信与我联络。非常感谢您同意为这份期刊进行这份重要的工作。<br />
-<br />
-{$editorialContactSignature}]]></body>
+如果您目前无法进行这份工作，或者对这项工作有任何的疑问，请直接回信与我联络。非常感谢您同意为这份期刊进行这份重要的工作。]]></body>
 		<description>这封电子邮件是由一位区段编辑寄发给稿件的校样编辑，请他们开始进行校样编辑的工作流程。邮件中含有关于稿件的信息以及如核取得稿件的指引.</description>
 	</email_text>
 	<email_text key="LAYOUT_REQUEST">
@@ -406,12 +436,10 @@
 3. 发送完成稿件给编辑.<br />
 <br />
 {$contextName} URL: {$contextUrl}<br />
-稿件URL: {$submissionLayoutUrl}<br />
+稿件URL: {$submissionUrl}<br />
 用户名: {$participantUsername}<br />
 <br />
-如果您这次不能完成这项工作或者有任何质询，请联系我们，感谢您对本刊的贡献.<br />
-<br />
-{$editorialContactSignature}]]></body>
+如果您这次不能完成这项工作或者有任何质询，请联系我们，感谢您对本刊的贡献.]]></body>
 		<description>这封电子邮件是由区段编辑寄发给版面编辑，通知他们要进行一份稿件的版面编辑工作。邮件中含有稿件的信息以及如何取得稿件的指引。</description>
 	</email_text>
 	<email_text key="LAYOUT_COMPLETE">
@@ -513,25 +541,6 @@
 <br />
 {$editorialContactSignature}]]></body>
 		<description>这封电子邮件是由区段编辑寄发给校对者，确认校对者完成了校对流程，并感谢他们的贡献。</description>
-	</email_text>
-	<email_text key="PROOFREAD_LAYOUT_REQUEST">
-		<subject>请版面编辑进行校对工作</subject>
-		<body><![CDATA[{$participantName}:<br />
-<br />
-稿件&quot;{$submissionTitle}&quot; （投向{$contextName}）已经被作者于校对人员校对完，请按照如下步骤完成所有更正.<br />
-1. 点击下面的稿件URL.<br />
-2. 登录到期刊，参考校对更正来创建更正的样稿。<br />
-3. 上传修订完的样稿.<br />
-4. 在校对步骤3里发送完成电邮给编辑.<br />
-<br />
-{$contextName} URL: {$contextUrl}<br />
-Subnmission URL: {$submissionUrl}<br />
-Username: {$participantUsername}<br />
-<br />
-如果您这次不能完成这项工作或者有任何质询，请联系我们，感谢您对本刊的贡献.<br />
-<br />
-{$editorialContactSignature}]]></body>
-		<description>这封电子邮件是由区段编辑寄发给版面编辑，通知他们文章的排版稿已经准备进行最后的校对工作。邮件中含有文章的信息以及取得文章的指引。</description>
 	</email_text>
 	<email_text key="PROOFREAD_LAYOUT_COMPLETE">
 		<subject>版面编辑的校对工作已经完成</subject>

@@ -4,8 +4,8 @@
 <!--
   * locale/ar_IQ/submission.xml
   *
-  * Copyright (c) 2014-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2014-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ar_IQ (العربية) locale.
@@ -28,12 +28,9 @@
 	<message key="submission.submit.whatNext.description">لقد تم إشعار المجلة بشأن طلبك هذا، وقد تمت مراسلتك لتأكيد بياناتك. بمجرد أن يراجع المحرر طلبك، سيقوم بالاتصال بك.</message>
 	<message key="grid.action.galleyInIssueEntry">اللوح الطباعي يظهر في مقدمة العدد</message>
 	<message key="grid.action.issueEntry">راجع البيانات الوصفية لطلب النشر هذا</message>
-	
+
 	<!-- Submission Information Modal -->
-	<message key="submission.issueEntry.modalTitle">البيانات الوصفية لطلب النشر</message>
-	<message key="submission.issueEntry.submissionMetadata">طلب النشر</message>
-	<message key="submission.issueEntry.publicationMetadata">النشر</message>
-	<message key="submission.issueEntry.confirm">أنشئ مدخلاً لطلب النشر هذا مستنداً إلى البيانات الوصفية أدناه.</message>
+	<message key="submission.publication">النشر</message>
 
 	<!-- events -->
 	<message key="submission.event.articleGalleyMadeAvailable">إن اللوح الطباعي للمؤَّلف "{$galleyFormatName}" قد صار جاهزاً.</message>
@@ -78,4 +75,9 @@
 
 	<message key="submission.metadataDescription">هذه المواصفات مستندة إلى جدول البيانات الوصفية Dublin Core، وهو صيغة قياسية عالمية تستعمل لوصف محتويات المجلة.</message>
 	<message key="section.any">أي قسم</message>
+
+	<message key="submission.sectionOptions">خيارات القسم</message>
+	<!-- categories -->
+	<message key="catalog.browseTitles">{$numTitles} فقرة/فقرات</message>
+	<message key="catalog.category.heading">كل الفقرات</message>
 </locale>

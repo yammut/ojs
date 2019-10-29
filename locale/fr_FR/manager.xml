@@ -4,8 +4,8 @@
 <!--
   * locale/fr_FR/manager.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_FR (Français (France)) locale.
@@ -235,6 +235,7 @@
 	<message key="manager.setup.reviewOptions.reviewerAccessKeysEnabled.description"><![CDATA[<strong>Note :</strong> Le courriel d'invitation destiné aux rapporteurs contient une URL qui les mène directement à la page d'évaluation de la soumission. L'accès à toute autre page requiert de se connecter. Pour des raisons de sécurité, les rédacteurs ne peuvent pas modifier les adresses de courriel, ni ajouter des CC ou CCI avant d'envoyer une invitation aux rapporteurs.]]></message>
 	<message key="manager.setup.reviewOptions.reviewerRatings">Notations du rapporteur</message>
 	<message key="manager.setup.reviewOptions.reviewerReminders">Rappels au rapporteur</message>
+	<message key="manager.setup.reviewOptions.showEnsuringLink"><![CDATA[Fournir un lien vers <a href="javascript:openHelp('{$blindReviewHelpId}')" class="action">Assurer une évaluation à l'aveugle</a> dans les pages où les auteurs et les rapporteurs peuvent télécharger des fichiers.]]></message>
 	<message key="manager.setup.reviewPolicy">Politique d'évaluation</message>
 	<message key="manager.setup.searchEngineIndexing">Indexation par les moteurs de recherche</message>
 	<message key="manager.setup.searchEngineIndexing.description">Pour aider les moteurs de recherche à découvrir cette revue, fournir une brève description de la revue et des mots-clés pertinents (séparés par un point virgule).</message>
@@ -287,11 +288,6 @@
 	<message key="manager.statistics.statistics.subscriptions">Abonnements</message>
 	<message key="manager.subscriptionPolicies">Politiques d'abonnement</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccess">Accès libre différé</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription">Avec un accès libre différé, les rédacteurs sont quand même en mesure de désigner des articles particuliers dans une revue pour les rendre en accès libre immédiatement.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription1">Rendre les numéros rétrospectifs de cette revue disponible en accès libre</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">mois après la publication du numéro.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Veuillez sélectionner une durée valide.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">La politique d'Accès libre différé suivante sera affichée dans À propos de la revue sous Politiques.</message>
 	<message key="manager.subscriptionPolicies.expiry">Échéance de l'abonnement</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">À l'échéance de l'abonnement, les lecteurs peuvent se voir refuser l'accès à tout contenu restreint ou peuvent conserver l'accès au contenu publié avant la date d'échéance de l'abonnement.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Échéance complète</message>

@@ -4,8 +4,8 @@
 <!--
   * locale/sl_SI/submission.xml
   *
-  * Copyright (c) 2014-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2014-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=Translating_OxS
   * Localization strings.
@@ -16,7 +16,7 @@
 	<message key="submission.submit.title">Oddaj prispevek</message>
 	<message key="submission.submit.userGroup">Oddaj v moji vlogi...</message>
 	<message key="submission.submit.userGroupDescription">Izberite v kakšni vlogi oddajate ta prispevek.</message>
-	<message key="submission.upload.selectComponent">Izberite komponteno prispevka</message>
+	<message key="submission.upload.selectComponent">Izberite komponento prispevka</message>
 	<message key="submission.title">Naslov prispevka</message>
 	<message key="submission.title.tip"><![CDATA[Tip prispevka je običajno eno od 'slika', 'besedilo', ali drug multimedijski tip vključno s 'programska oprema' ali 'interaktivno'. Prosimo, izberite najbolj relevantno možnost. Primere lahko najdete na <a target="_blank" href="http://dublincore.org/documents/2001/04/12/usageguide/generic.shtml#type">http://dublincore.org/documents/2001/04/12/usageguide/generic.shtml#type</a>]]></message>
 	<message key="submission.submit.newSubmissionMultiple">Začni z oddajo prispevka za</message>
@@ -30,10 +30,7 @@
 	<message key="grid.action.issueEntry">Poglej metapodatke prispevka</message>
 
 	<!-- Submission Information Modal -->
-	<message key="submission.issueEntry.modalTitle">Metapodatki o prispevku in številki</message>
-	<message key="submission.issueEntry.submissionMetadata">Prispevek</message>
-	<message key="submission.issueEntry.publicationMetadata">Številka</message>
-	<message key="submission.issueEntry.confirm">Ustvari vpis v številko za ta prispevek na osnovi spodnjih metapodatkov.</message>
+	<message key="submission.publication">Številka</message>
 
 	<!-- events -->
 	<message key="submission.event.articleGalleyMadeAvailable">Prelom "{$galleyFormatName}" za prispevek je na voljo.</message>
@@ -78,4 +75,6 @@
 	<message key="submission.metadataDescription">Te specifikacije temljijo na Dublin Core standardu metapodatkov za opis vsebine revije.</message>
 	<message key="section.any">Katerakoli rubrika</message>
 	<message key="submission.submit.form.wordCountAlert">Vaš izvleček je predolg. Prosimo skrajšajte ga na spodaj zapisano omejitev dolžino.</message>
+	<message key="catalog.browseTitles">{$numTitles} postavk</message>
+	<message key="catalog.category.heading">Vse postavke</message>
 </locale>

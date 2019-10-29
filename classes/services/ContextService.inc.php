@@ -2,8 +2,8 @@
 /**
  * @file classes/services/ContextService.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ContextService
@@ -124,12 +124,12 @@ class ContextService extends \PKP\Services\PKPContextService {
 		$subscriptionTypeDao = \DAORegistry::getDAO('SubscriptionTypeDAO');
 		$subscriptionTypeDao->deleteByJournal($context->getId());
 
-		$articleDao = \DAORegistry::getDAO('ArticleDAO');
-		$articleDao->deleteByContextId($context->getId());
+		$submissionDao = \DAORegistry::getDAO('SubmissionDAO');
+		$submissionDao->deleteByContextId($context->getId());
 
 		import('classes.file.PublicFileManager');
 		$publicFileManager = new \PublicFileManager();
-		$publicFileManager->rmtree($publicFileManager->getJournalFilesPath($context->getId()));
+		$publicFileManager->rmtree($publicFileManager->getContextFilesPath($context->getId()));
 	}
 
 	/**
@@ -152,7 +152,7 @@ class ContextService extends \PKP\Services\PKPContextService {
 
 		// If a journal thumbnail is passed, check that the temporary file exists
 		// and the current user owns it
-		$user = \Application::getRequest()->getUser();
+		$user = \Application::get()->getRequest()->getUser();
 		$userId = $user ? $user->getId() : null;
 		import('lib.pkp.classes.file.TemporaryFileManager');
 		$temporaryFileManager = new \TemporaryFileManager();
@@ -165,7 +165,7 @@ class ContextService extends \PKP\Services\PKPContextService {
 					if (!is_array($errors['journalThumbnail'])) {
 						$errors['journalThumbnail'] = [];
 					}
-					$errors['journalThumbnail'][$localeKey] = [__('manager.setup.noTemporaryFile')];
+					$errors['journalThumbnail'][$localeKey] = [__('common.noTemporaryFile')];
 				}
 			}
 		}

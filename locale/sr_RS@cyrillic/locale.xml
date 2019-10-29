@@ -4,8 +4,8 @@
 <!--
   * locale/sr_RS@cyrillic/locale.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=OJS:_Serbian_(sr_RS)
   * Localization strings for the sr_RS@cyrillic (Cрпски) locale.
@@ -71,7 +71,11 @@
 	<message key="section.abbreviation.example">(Нпр. Чланци=CLA)</message>
 
 
-	<!--  Common Article Terms  --><message key="article.articles">Чланци</message>
+	<!--  Common Article Terms  -->
+	<message key="article.article">Чланак</message>
+	<message key="article.articles">Чланци</message>
+	<message key="common.publication">Чланак</message>
+	<message key="common.publications">Чланци</message>
 	<message key="article.submissionId">ID поднеска чланка</message>
 	<message key="article.title">Наслов</message>
 	<message key="article.authors">Аутори</message>
@@ -119,7 +123,6 @@
 	<message key="submissions.step1">1. корак</message>
 	<message key="submissions.step3">3. корак</message>
 	<message key="submissions.queuedReview">У рецензији</message>
-	<message key="submissions.scheduled">Планирано</message>
 	<message key="submissions.published">Објављено</message>
 	<message key="submissions.initial">Првобитно</message>
 	<message key="submissions.proofread">Кориговање</message>
@@ -560,9 +563,7 @@ Aктивирани OAI протокол може бити искључен на
 	<message key="log.author.documentRevised">{$authorName} је ревидирао свој прилог {$submissionId}. ID новог фајла је {$fileId}.</message>
 	<message key="log.review.reviewerUnassigned">{$reviewerName} је повучен(а) из рецензентског поступка прилога {$submissionId} у {$round}. кругу рецензије.</message>
 	<message key="log.review.reviewInitiated">Рецензент {$reviewerName} је покренуо  {$round}. круг рецензије прилога {$submissionId}.</message>
-	<message key="log.review.reviewReinitiated">{$round}. круг рецензије рецензента {$reviewerName} за прилог {$submissionId} је изнова покренут.</message>
 	<message key="log.review.reviewCancelled">Рецензија {$round}. круга рецензента {$reviewerName} за прилог {$submissionId} је поништена.</message>
-	<message key="log.review.reviewCleared">Рецензија {$round}. круга рецензента {$reviewerName} за прилог {$submissionId} је обрисана.</message>
 	<message key="log.review.reviewerRated">{$reviewerName} је оцењен за {$round}. круг рецензије прилога {$submissionId}.</message>
 	<message key="log.review.reviewDueDateSet">Крајњи рок за {$round}. круг рецензије за прилог {$submissionId} за рецензента {$reviewerName} је промењен на {$dueDate}.</message>
 	<message key="log.review.reviewRecommendationSet">Рецензент {$reviewerName} је поставио препоруку за {$round}. круг рецензије прилога {$submissionId}.</message>
@@ -711,7 +712,6 @@ Aктивирани OAI протокол може бити искључен на
 	<message key="help.searchReturnResults">Повратак на резултате претраживања</message>
 	<message key="payment.type.purchaseArticle">Цена приступа појединим чланцима</message>
 	<message key="journal.issn">ISSN</message>
-	<message key="article.article">Чланак</message>
 	<message key="user.manageMySubscriptions">Управљање мојим претплатама</message>
 	<message key="subscriptionTypes.currency">Валута</message>
 	<message key="subscriptionTypes.year">година</message>
@@ -774,7 +774,6 @@ Aктивирани OAI протокол може бити искључен на
 	<message key="about.subscriptionTypes.duration">Трајање</message>
 	<message key="about.subscriptionTypes.cost">Цена</message>
 	<message key="payment.authorFees">Накнаде за аутора</message>
-	<message key="notification.type.articleSubmitted">Нови чланак, "{$param}", je predat.</message>
 	<message key="notification.type.galleyModified">Фајл за приказ је измењен за "{$param}".</message>
 	<message key="notification.type.issuePublished">Издање је објављено.</message>
 	<message key="notification.type.newAnnouncement">Ново обавештење је направљено.</message>

@@ -4,8 +4,8 @@
 <!--
   * locale/sl_SI/manager.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=Translating_OxS
   * Localization strings.
@@ -294,7 +294,6 @@
 	<message key="manager.setup.reviewOptions.reviewerAccessKeysEnabled.description"><![CDATA[<strong>Opozorilo:</strong> E-poštna povabila recenzentom vsebujejo posebne URL povezave, ki vodijo recenzente direktno na stran za opravljanje recenzije prispevka (za dostop do drugih strani se morajo najprej prijaviti). Iz varnostnih razlogov uredniki ne morejo spreminjati e-poštnega naslova ali dodati kopijo ali skrito kopijo e-poštnega naslova pred pošiljanjem e-pošte recenzentom.]]></message>
 	<message key="manager.setup.reviewOptions.reviewerRatings">Ocene recenzentov</message>
 	<message key="manager.setup.reviewOptions.reviewerReminders">Opomniki recenzentom</message>
-	<message key="manager.setup.reviewOptions.showEnsuringLink"><![CDATA[Prikaži povezavo na <a href="javascript:openHelp('{$blindReviewHelpId}')" class="action">Kako zagotoviti anonimnost recenzije</a> na straneh, kjer avtorji in recenzenti nalagajo svoje datoteke.]]></message>
 	<message key="manager.setup.reviewPolicy">Recenzijska politika</message>
 	<message key="manager.setup.searchEngineIndexing">Indeksiranje revije za iskalnike</message>
 	<message key="manager.setup.searchEngineIndexingDescription">Opišite na kratko revijo in relevantne ključne besede (ločene s podpičji), ki bodo pomagali uporabnikom raznih iskalnikov najti to revijo.</message>
@@ -366,11 +365,6 @@
 	<message key="manager.subscriptionPolicies.authorSelfArchive">Politika avtorjevega samo-arhiviranja</message>
 	<message key="manager.subscriptionPolicies.authorSelfArchiveDescription">Spodnja politika avtorjevega samo-arhiviranja bo objavljena na strani O reviji pod Politikami.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccess">Prost dostop z zamikom</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription">Kljub politiki prostega dostopa z zamikom lahko uredniki določijo specifične prispevke v posamezni številki revije, ki imajo takojšen prost dostop.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription1">Predhodne številke revije bodo na voljo preko prostega dostopa</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">mesecev po izdaji številke.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Izberite veljavno dolžino trajanja.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Spodnja politika prostega dostopa z zamikom bo objavljena na strani O reviji pod Politikami.</message>
 	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Prosimo izberite določeno potrditveno polje.</message>
 	<message key="manager.subscriptionPolicies.expiry">Iztek naročnine</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">Po izteku naročnine je bralcem lahko zavrnjen dostop do vseh naročenih vsebin ali pa ohranijo dostop do vsebin, ki so mu bile na voljo pred iztekom naročnine.</message>
@@ -599,4 +593,10 @@
 	<message key="manager.navigationMenus.mySubscriptions.description">Povezava do strani, kjer so opisane vse naročnine uporabnika, sedanja in pretekle.</message>
 	<message key="manager.navigationMenus.mySubscriptions.conditionalWarning">Povezava bo prikazana le, ko bo uporabnik prijavljen.</message>
 	<message key="plugins.importexport.common.export.error.inputFileNotReadable">Vhodna datoteka {$param} ni berljiva.</message>
+	<message key="manager.setup.enableOai">Omogoči OAI dostop do vsebin</message>
+	<message key="manager.subscriptions.form.dateStartEmpty">To je časovno neomejena naročnina; prosimo ne določite začetnega datuma.</message>
+	<message key="manager.subscriptions.form.dateEndEmpty">To je časovno neomejena naročnina; prosimo ne določite končnega datuma.</message>
+	<message key="stats.publishedSubmissions.details">Podrobnosti članka</message>
+	<message key="stats.publishedSubmissions.none">Najdenih ni bilo nobenih člankov.</message>
+	<message key="stats.publishedSubmissions.totalAbstractViews.timeSegment">Skupno število vpogledov v povzetek posameznega članka po datumih</message>
 </locale>

@@ -2,8 +2,8 @@
 /**
  * @file classes/security/authorization/OjsIssueRequiredPolicy.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OjsIssueRequiredPolicy
@@ -69,7 +69,8 @@ class OjsIssueRequiredPolicy extends DataObjectRequiredPolicy {
 	 * @copydoc DataObjectRequiredPolicy::getDataObjectId()
 	 * Considers a not numeric public URL identifier
 	 */
-	function getDataObjectId() {
+	function getDataObjectId($lookOnlyByParameterName = false) {
+		if ($lookOnlyByParameterName) throw new Exception('lookOnlyByParameterName not supported for issues.');
 		// Identify the data object id.
 		$router = $this->_request->getRouter();
 		switch(true) {

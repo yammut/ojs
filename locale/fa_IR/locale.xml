@@ -3,8 +3,8 @@
 <!--
   * locale/fa_IR/locale.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=Translating_OxS
   * Credits: https://pkp.sfu.ca/wiki/index.php?title=OJS:_Farsi_(fa_IR)
@@ -86,6 +86,8 @@
 	<!-- Common Article Terms -->
 	<message key="article.article">مقاله</message>
 	<message key="article.articles">مقالات</message>
+	<message key="common.publication">مقاله</message>
+	<message key="common.publications">مقالات</message>
 	<message key="article.submissionId">شناسه مقاله ارسالی</message>
 	<message key="article.title">عنوان</message>
 	<message key="article.authors">نویسندگان</message>
@@ -143,7 +145,6 @@
 	<message key="submissions.step1">مرحله 1</message>
 	<message key="submissions.step3">مرحله 3</message>
 	<message key="submissions.queuedReview">در نوبت داوری</message>
-	<message key="submissions.scheduled">زیر چاپ</message>
 	<message key="submissions.published">چاپ شده</message>
 	<message key="submissions.initial">اولیه</message>
 	<message key="submissions.proofread">بازبینی</message>
@@ -684,8 +685,6 @@
 	<message key="log.author.documentRevised">{$authorName} مقاله  {$submissionId} را اصلاح کرد. شناسه فایل جدید  {$fileId} می‌باشد.</message>
 	<message key="log.review.reviewerUnassigned">{$reviewerName} از داوری مقاله {$submissionId} برای دور  {$round} معزول شد.</message>
 	<message key="log.review.reviewInitiated">دور  {$round} داوری {$reviewerName} برای مقاله  {$submissionId} شروع شد.</message>
-	<message key="log.review.reviewReinitiated">دور {$round} داوری {$reviewerName} برای مقاله  {$submissionId} از نو شروع شد.</message>
-	<message key="log.review.reviewCleared">دور {$round} داوری {$reviewerName} برای مقاله {$submissionId} پاک شد.</message>
 	<message key="log.review.reviewerRated">{$reviewerName}  امتیاز دور  {$round} داوری مقاله {$submissionId} را وارد نمود.</message>
 	<message key="log.review.reviewDueDateSet">مهلت داوری دور  {$round} مقاله  {$submissionId} توسط {$reviewerName} به  {$dueDate} تغییر یافت.</message>
 	<message key="log.review.reviewRecommendationSet">{$reviewerName} دور {$round} داوری برای مقاله  {$submissionId} را توصیه کرد.</message>
@@ -719,7 +718,6 @@
 	<message key="log.imported">{$userName} مقاله  {$submissionId} را وارد کرد.</message>
 	<message key="metadata.pkp.peerReviewed">مقاله داوری شده</message>
 	<!-- Notification Types -->
-	<message key="notification.type.articleSubmitted">یک مقاله جدید، "{$title}"، ارسال شد.</message>
 	<message key="notification.type.editing">ویرایش رویدادها</message>
 	<message key="notification.type.submissionSubmitted">یک مقاله با عنوان  "{$title}" ارسال شده است</message>
 	<message key="notification.type.editorDecisionComment">نقطه‌نظری در خصوص تصمیم دبیر درباره "{$title}" برجا گذاشته شده است.</message>
@@ -736,7 +734,6 @@
 	<message key="notification.type.editorAssignmentTask">مقاله‌ی جدیدی ثبت شده است ، لطفاً داوری برای آن مشخص نمایید</message>
 	<message key="notification.type.assignProductionUser">افزودن یک کاربر برای ایجاد کلیشه چاپی با انتخاب گزینه افزودن لینک در بخش همکاران</message>
 	<message key="notification.type.awaitingRepresentations">در انتظار کلیشه‌های چاپی.</message>
-	<message key="notification.type.publicationScheduled">این مقاله در نوبت چاپ قرار گرفت</message>
 	<!--
 	 *
 	 * MISC - Entries that do not belong in the other sections.

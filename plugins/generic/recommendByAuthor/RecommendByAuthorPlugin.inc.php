@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/recommendByAuthor/RecommendByAuthorPlugin.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RecommendByAuthorPlugin
@@ -64,7 +64,6 @@ class RecommendByAuthorPlugin extends GenericPlugin {
 		// Find articles of the same author(s).
 		$displayedArticle = $smarty->getTemplateVars('article');
 		$authors = $displayedArticle->getAuthors();
-		$authorDao = DAORegistry::getDAO('AuthorDAO'); /* @var $authorDao AuthorDAO */
 		$foundArticles = array();
 		foreach($authors as $author) { /* @var $author Author */
 			// The following article search is by name only as authors are
@@ -72,25 +71,30 @@ class RecommendByAuthorPlugin extends GenericPlugin {
 			// false positives or miss some entries. But there's no other way
 			// until OJS allows users to consistently normalize authors (via name,
 			// email, ORCID, whatever).
-			$articles = $authorDao->getPublishedArticlesForAuthor(
-				null, $author->getLocalizedGivenName(), $author->getLocalizedFamilyName(),
-				$author->getLocalizedAffiliation(), $author->getCountry()
-			);
-			foreach ($articles as $article) { /* @var $article PublishedArticle */
-				if ($displayedArticle->getId() == $article->getId()) continue;
-				$foundArticles[] = $article->getId();
+			$authorsIterator = Services::get('author')->getMany([
+				'contextIds' => $displayedArticle->getData('contextId'),
+				'givenName' => $author->getLocalizedGivenName(),
+				'familyName' => $author->getLocalizedFamilyName(),
+			]);
+			$publicationIds = [];
+			foreach ($authorsIterator as $thisAuthor) {
+				$publicationIds[] = $thisAuthor->getData('publicationId');
 			}
+			$submissionIds = array_map(function($publicationId) {
+				return Services::get('publication')->get($publicationId)->getData('submissionId');
+			}, array_unique($publicationIds));
+			$foundArticles = array_merge($foundArticles, array_unique($submissionIds));
 		}
-		$results = array_unique($foundArticles);
+		$results = $foundArticles;
 
 		// Order results by metric.
 		$application = Application::getApplication();
 		$metricType = $application->getDefaultMetricType();
 		if (empty($metricType)) $smarty->assign('noMetricSelected', true);
-		$column = STATISTICS_DIMENSION_ARTICLE_ID;
+		$column = STATISTICS_DIMENSION_SUBMISSION_ID;
 		$filter = array(
 				STATISTICS_DIMENSION_ASSOC_TYPE => array(ASSOC_TYPE_GALLEY, ASSOC_TYPE_SUBMISSION),
-				STATISTICS_DIMENSION_ARTICLE_ID => array($results)
+				STATISTICS_DIMENSION_SUBMISSION_ID => array($results)
 		);
 		$orderBy = array(STATISTICS_METRIC => STATISTICS_ORDER_DESC);
 		$statsReport = $application->getMetrics($metricType, $column, $filter, $orderBy);
@@ -105,7 +109,7 @@ class RecommendByAuthorPlugin extends GenericPlugin {
 		$orderedResults = array_merge($orderedResults, $remainingResults);
 
 		// Pagination.
-		$request = Application::getRequest();
+		$request = Application::get()->getRequest();
 		$rangeInfo = Handler::getRangeInfo($request, 'articlesBySameAuthor');
 		if ($rangeInfo && $rangeInfo->isValid()) {
 			$page = $rangeInfo->getPage();

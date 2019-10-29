@@ -2,8 +2,8 @@
 /**
  * @file classes/components/form/site/SiteConfigForm.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SiteConfigForm
@@ -37,7 +37,7 @@ class SiteConfigForm extends FormComponent {
 		$this->successMessage = __('admin.settings.config.success');
 		$this->locales = $locales;
 
-		$contexts = \Services::get('context')->getMany(['isEnabled' => true]);
+		$contextsIterator = \Services::get('context')->getMany(['isEnabled' => true]);
 
 		$this->addField(new FieldText('title', [
 			'label' => __('admin.settings.siteTitle'),
@@ -46,9 +46,9 @@ class SiteConfigForm extends FormComponent {
 			'value' => $site->getData('title'),
 		]));
 
-		if (!empty($contexts)) {
+		if (count($contextsIterator)) {
 			$options = [['value' => '', 'label' => '']];
-			foreach ($contexts as $context) {
+			foreach ($contextsIterator as $context) {
 				$options[] = [
 					'value' => $context->getId(),
 					'label' => $context->getLocalizedData('name'),

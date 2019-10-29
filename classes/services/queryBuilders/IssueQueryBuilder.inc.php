@@ -3,8 +3,8 @@
 /**
  * @file classes/services/QueryBuilders/IssueQueryBuilder.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class
@@ -34,6 +34,9 @@ class IssueQueryBuilder extends BaseQueryBuilder {
 
 	/** @var boolean return published issues */
 	protected $isPublished = null;
+
+	/** @var array list of issue ids to retrieve */
+	protected $issueIds = [];
 
 	/** @var array return issues in volume(s) */
 	protected $volumes = null;
@@ -137,6 +140,18 @@ class IssueQueryBuilder extends BaseQueryBuilder {
 	}
 
 	/**
+	 * Set issue id filter
+	 *
+	 * @param array $issueIds
+	 *
+	 * @return \APP\Services\QueryBuilders\IssueQueryBuilder
+	 */
+	public function filterByIds($issueIds) {
+		$this->issueIds = $issueIds;
+		return $this;
+	}
+
+	/**
 	 * Whether to return only a count of results
 	 *
 	 * @param bool $enable
@@ -159,7 +174,7 @@ class IssueQueryBuilder extends BaseQueryBuilder {
 					->leftJoin('issue_settings as is', 'i.issue_id', '=', 'is.issue_id')
 					->leftJoin('custom_issue_orders as o', 'o.issue_id', '=', 'i.issue_id')
 					->orderBy($this->orderColumn, $this->orderDirection)
-					->groupBy('i.issue_id');
+					->groupBy('i.issue_id', $this->orderColumn);
 
 		// context
 		// Never permit a query without a context_id clause unless the '*' wildcard
@@ -188,6 +203,11 @@ class IssueQueryBuilder extends BaseQueryBuilder {
 		// years
 		if (!is_null($this->years)) {
 			$q->whereIn('i.year', $this->years);
+		}
+
+		// issue ids
+		if (!empty($this->issueIds)) {
+			$q->whereIn('i.issue_id', $this->issueIds);
 		}
 
 		// Allow third-party query statements

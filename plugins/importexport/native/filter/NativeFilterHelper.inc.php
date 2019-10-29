@@ -2,8 +2,8 @@
 /**
  * @file plugins/importexport/native/filter/NativeFilterHelper.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeFilterHelper
@@ -69,7 +69,7 @@ class NativeFilterHelper {
 
 				import('classes.file.PublicFileManager');
 				$publicFileManager = new PublicFileManager();
-				$filePath = $publicFileManager->getContextFilesPath(ASSOC_TYPE_JOURNAL, $object->getJournalId()) . '/' . $coverImage;
+				$filePath = $publicFileManager->getContextFilesPath($object->getData('contextId')) . '/' . $coverImage;
 				$embedNode = $doc->createElementNS($deployment->getNamespace(), 'embed', base64_encode(file_get_contents($filePath)));
 				$embedNode->setAttribute('encoding', 'base64');
 				$coverNode->appendChild($embedNode);
@@ -121,7 +121,7 @@ class NativeFilterHelper {
 					case 'embed':
 						import('classes.file.PublicFileManager');
 						$publicFileManager = new PublicFileManager();
-						$filePath = $publicFileManager->getContextFilesPath(ASSOC_TYPE_JOURNAL, $context->getId()) . '/' . $object->getCoverImage($locale);
+						$filePath = $publicFileManager->getContextFilesPath($context->getId()) . '/' . $object->getCoverImage($locale);
 						file_put_contents($filePath, base64_decode($n->textContent));
 						break;
 					default:

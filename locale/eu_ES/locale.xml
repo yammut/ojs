@@ -4,8 +4,8 @@
 <!--
   * locale/eu_ES/locale.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -106,7 +106,10 @@
 	<message key="section.abbreviation">Laburdura</message>
 	<message key="section.abbreviation.example">(Adibidez, Artikuluak=ART)</message>
 	<!-- Common Article Terms -->
+	<message key="article.article">Artikulua</message>
 	<message key="article.articles">Artikuluak</message>
+	<message key="common.publication">Artikulua</message>
+	<message key="common.publications">Artikuluak</message>
 	<message key="article.submissionId">Bidalketa ID</message>
 	<message key="article.title">Titulua</message>
 	<message key="article.authors">Egileak</message>
@@ -165,7 +168,6 @@
 	<message key="submissions.step1">1. urratsa</message>
 	<message key="submissions.step3">3. urratsa</message>
 	<message key="submissions.queuedReview">Ebaluatzen</message>
-	<message key="submissions.scheduled">Programatuta</message>
 	<message key="submissions.published">Argitaratuta</message>
 	<message key="submissions.initial">Lehenengoa</message>
 	<message key="submissions.proofread">Probak zuzenduta</message>
@@ -821,8 +823,6 @@ Zure zerbitzariak mbstring hau onartzen du: <strong>{$supportsMBString}</strong>
 artikulua ebaluatzeko {$round}. bueltan.</message>
 	<message key="log.review.reviewerUnassigned">{$reviewerName} ebaluatzaileari {$submissionId} artikulua ebaluatzeko esleipena kendu zaio {$round}. bueltan.</message>
 	<message key="log.review.reviewInitiated">{$reviewerName} {$submissionId} artikula {$round}. bueltan ebaluatzen hasi da.</message>
-	<message key="log.review.reviewReinitiated">{$reviewerName} berriro hasi da {$submissionId} artikulua {$round}. bueltan ebaluatzen.</message>
-	<message key="log.review.reviewCleared">{$reviewerName} ebaluatzailearen {$submissionId} artikuluaren {$round}. ebaluazio-buelta ezabatu egin da.</message>
 	<message key="log.review.reviewerRated">{$reviewerName} {$submissionId} artikuluaren {$round}. ebaluazio-bueltarako baloratu da.</message>
 	<message key="log.review.reviewDueDateSet">{$reviewerName} ebaluatzailearen {$submissionId} artikuluaren {$round}. ebaluazio-bueltaren mugaeguna {$dueDate} izango da.</message>
 	<message key="log.review.reviewRecommendationSet">{$reviewerName} ebaluatzailearen {$submissionId} artikuluaren {$round}. ebaluazio-bueltako gomendioa ezarri da.</message>
@@ -880,7 +880,6 @@ artikuluaren probak zuzentzeko.</message>
 	 *
 	-->
 	<!-- Default settings for payment items. -->
-	<message key="article.article">Artikulua</message>
 	<message key="user.manageMySubscriptions">Kudeatu nire harpidetzak</message>
 	<message key="subscriptionTypes.currency">Moneta:</message>
 	<message key="subscriptionTypes.year">urtea</message>
@@ -957,7 +956,6 @@ artikuluaren probak zuzentzeko.</message>
 	<message key="payment.subscription.purchase">Erosi harpidetza</message>
 	<message key="installer.installApplication">Instalatu Open Journal Systems</message>
 	<message key="installer.upgradeApplication">Bertsio-berritu Open Journal Systems</message>
-	<message key="notification.type.articleSubmitted">Artikulu berri bat, "{$title}", aurkeztu da.</message>
 	<message key="notification.type.editing">Gertaerak editatzen</message>
 	<message key="notification.type.editorDecisionComment">Editoreak erabakitzeko iruzkin bat utzi da "{$title}" artikuluan.</message>
 	<message key="notification.type.galleyModified">Galerada bat aldatu da "{$title}" artikuluan.</message>

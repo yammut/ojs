@@ -1,8 +1,8 @@
 {**
  * @file plugins/pubIds/doi/templates/doiSuffixEdit.tpl
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Edit custom DOI suffix for an object (issue, submission, galley)
@@ -52,9 +52,9 @@
 {/if}
 {* issue pub object *}
 {if $pubObjectType == 'Issue'}
-	{assign var=enableSubmissionDoi value=$pubIdPlugin->getSetting($currentContext->getId(), "enableSubmissionDoi")}
+	{assign var=enablePublicationDoi value=$pubIdPlugin->getSetting($currentContext->getId(), "enablePublicationDoi")}
 	{assign var=enableRepresentationDoi value=$pubIdPlugin->getSetting($currentContext->getId(), "enableRepresentationDoi")}
-	{if $enableSubmissionDoi || $enableRepresentationDoi}
+	{if $enablePublicationDoi || $enableRepresentationDoi}
 		{if !$formArea}
 			{assign var="formAreaTitle" value="plugins.pubIds.doi.editor.doi"}
 		{else}

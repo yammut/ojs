@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/medra/filter/ArticleMedraXmlFilter.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleMedraXmlFilter
@@ -55,7 +55,7 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 	//
 	/**
 	 * @see Filter::process()
-	 * @param $pubObjects array Array of PublishedArticles or ArticleGalleys
+	 * @param $pubObjects array Array of Submissions or ArticleGalleys
 	 * @return DOMDocument
 	 */
 	function &process(&$pubObjects) {
@@ -84,7 +84,7 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 	/**
 	 * Create and return the article (as work or as manifestation) node.
 	 * @param $doc DOMDocument
-	 * @param $pubObject PublishedArticle|ArticleGalley
+	 * @param $pubObject Submission|ArticleGalley
 	 * @return DOMElement
 	 */
 	function createArticleNode($doc, $pubObject) {
@@ -92,13 +92,13 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		$context = $deployment->getContext();
 		$cache = $deployment->getCache();
 		$plugin = $deployment->getPlugin();
-		$request = Application::getRequest();
+		$request = Application::get()->getRequest();
 		$router = $request->getRouter();
 
-		assert ((is_a($pubObject, 'PublishedArticle') && $this->isWork($context, $plugin)) ||
+		assert ((is_a($pubObject, 'Submission') && $this->isWork($context, $plugin)) ||
 				(is_a($pubObject, 'ArticleGalley') && !$this->isWork($context, $plugin)));
 
-		if (is_a($pubObject, 'PublishedArticle')) {
+		if (is_a($pubObject, 'Submission')) {
 			$galley = null;
 			$article = $pubObject;
 			if (!$cache->isCached('articles', $article->getId())) {
@@ -109,12 +109,12 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 			$epubFormat = O4DOI_EPUB_FORMAT_HTML;
 		} else {
 			$galley = $pubObject;
-			if ($cache->isCached('articles', $galley->getSubmissionId())) {
-				$article = $cache->get('articles', $galley->getSubmissionId());
+			$publication = Services::get('publication')->get($galley->getData('publicationId'));
+			if ($cache->isCached('articles', $publication->getData('submissionId'))) {
+				$article = $cache->get('articles', $publication->getData('submissionId'));
 			} else {
-				$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO'); /* @var $publishedArticleDao PublishedArticleDAO */
-				$article = $publishedArticleDao->getByArticleId($galley->getSubmissionId());
-				if ($article) $cache->add($article, null);
+				$article = Services::get('submission')->get($publication->getData('submissionId'));
+				if ($article && $article->getData('status') === STATUS_PUBLISHED) $cache->add($article, null);
 			}
 			$articleNodeName = 'DOISerialArticleVersion';
 			$workOrProduct = 'Product';
@@ -136,8 +136,8 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		// DOI (mandatory)
 		$articleNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'DOI', htmlspecialchars($doi, ENT_COMPAT, 'UTF-8')));
 		// DOI URL (mandatory)
-		$urlPath = $article->getBestArticleId();
-		if ($galley) $urlPath = array($article->getBestArticleId(), $galley->getBestGalleyId());
+		$urlPath = $article->getBestId();
+		if ($galley) $urlPath = array($article->getBestId(), $galley->getBestGalleyId());
 		$url = $router->url($request, $context->getPath(), 'article', 'view', $urlPath, null, null, true);
 		if ($plugin->isTestMode($context)) {
 			// Change server domain for testing.
@@ -151,7 +151,7 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		// Registration authority (mandatory)
 		$articleNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'RegistrationAuthority', 'mEDRA'));
 		// WorkIdentifier - proprietary ID
-		$pubObjectProprietaryId = $context->getId() . '-' . $article->getIssueId() . '-' . $article->getId();
+		$pubObjectProprietaryId = $context->getId() . '-' . $article->getCurrentPublication()->getData('issueId') . '-' . $article->getId();
 		if ($galley) $pubObjectProprietaryId .= '-g' . $galley->getId();
 		$articleNode->appendChild($this->createIdentifierNode($doc, $workOrProduct, O4DOI_ID_TYPE_PROPRIETARY, $pubObjectProprietaryId));
 		// Issue/journal locale precedence.
@@ -159,7 +159,7 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		// Serial Publication (mandatory)
 		$articleNode->appendChild($this->createSerialPublicationNode($doc, $journalLocalePrecedence, $epubFormat));
 		// Journal Issue (mandatory)
-		$issueId = $article->getIssueId();
+		$issueId = $article->getCurrentPublication()->getData('issueId');
 		if ($cache->isCached('issues', $issueId)) {
 			$issue = $cache->get('issues', $issueId);
 		} else {
@@ -180,7 +180,7 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 	 * Create a content item node.
 	 * @param $doc DOMDocument
 	 * @param $issue Issue
-	 * @param $article PublishedArticle
+	 * @param $article Submission
 	 * @param $galley ArticleGalley
 	 * @param $objectLocalePrecedence array
 	 * @return DOMElement
@@ -191,11 +191,12 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		$plugin = $deployment->getPlugin();
 		$contentItemNode = $doc->createElementNS($deployment->getNamespace(), 'ContentItem');
 		// Sequence number
-		$seq = $article->getSequence();
-		assert(!empty($seq));
-		$contentItemNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'SequenceNumber', $seq));
+		$seq = $article->getCurrentPublication()->getData('seq');
+		if ($seq) {
+			$contentItemNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'SequenceNumber', $seq));
+		}
 		// Describe page runs
-		$pages = $article->getPageArray();
+		$pages = $article->getCurrentPublication()->getPageArray();
 		if ($pages) {
 			$textItemNode = $doc->createElementNS($deployment->getNamespace(), 'TextItem');
 			foreach ($pages as $range) {
@@ -216,13 +217,13 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 			if ($galleyFile) $contentItemNode->appendChild($this->createExtentNode($doc, $galleyFile));
 		}
 		// Article Title (mandatory)
-		$titles = $this->getTranslationsByPrecedence($article->getTitle(null), $objectLocalePrecedence);
+		$titles = $this->getTranslationsByPrecedence($article->getCurrentPublication()->getFullTitles(), $objectLocalePrecedence);
 		assert(!empty($titles));
 		foreach ($titles as $locale => $title) {
 			$contentItemNode->appendChild($this->createTitleNode($doc, $locale, $title, O4DOI_TITLE_TYPE_FULL));
 		}
 		// Contributors
-		$authors = $article->getAuthors();
+		$authors = $article->getCurrentPublication()->getData('authors');
 		assert(!empty($authors));
 		foreach ($authors as $author) {
 			$contentItemNode->appendChild($this->createContributorNode($doc, $author, $objectLocalePrecedence));
@@ -237,19 +238,19 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		// Article keywords
 		// SubjectClass will be left out here, because we don't know the scheme/classification name
 		$submissionKeywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
-		$allKeywords = $submissionKeywordDao->getKeywords($article->getId(), $context->getSupportedSubmissionLocales());
+		$allKeywords = $submissionKeywordDao->getKeywords($article->getCurrentPublication()->getId(), $context->getSupportedSubmissionLocales());
 		$keywords = $this->getPrimaryTranslation($allKeywords, $objectLocalePrecedence);
 		if (!empty($keywords)) {
 			$keywordsString = implode(';', $keywords);
 			$contentItemNode->appendChild($this->createSubjectNode($doc, O4DOI_SUBJECT_SCHEME_PUBLISHER, $keywordsString));
 		}
 		// Object Description 'OtherText'
-		$descriptions = $this->getTranslationsByPrecedence($article->getAbstract(null), $objectLocalePrecedence);
+		$descriptions = $this->getTranslationsByPrecedence($article->getCurrentPublication()->getData('abstract'), $objectLocalePrecedence);
 		foreach ($descriptions as $locale => $description) {
 			$contentItemNode->appendChild($this->createOtherTextNode($doc, $locale, $description));
 		}
 		// Article Publication Date
-		$datePublished = $article->getDatePublished();
+		$datePublished = $article->getCurrentPublication()->getData('datePublished');
 		if (!empty($datePublished)) {
 			$contentItemNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'PublicationDate', date('Ymd', strtotime($datePublished))));
 		}
@@ -271,8 +272,7 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		if (!empty($issueDoi)) $relatedIssueIds[O4DOI_ID_TYPE_DOI] = $issueDoi;
 		$relatedIssueNode = $this->createRelatedNode($doc, $issueWorkOrProduct, O4DOI_RELATION_IS_PART_OF, $relatedIssueIds);
 		// Galleys
-		$galleyDao = DAORegistry::getDAO('ArticleGalleyDAO'); /* @var $galleyDao ArticleGalleyDAO */
-		$galleysByArticle = $galleyDao->getBySubmissionId($article->getId())->toArray();
+		$galleysByArticle = $article->getCurrentPublication()->getData('galleys');
 		if (!$galley) { // if exporting object is an article
 			$contentItemNode->appendChild($relatedIssueNode);
 			// related products:
@@ -291,9 +291,9 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 
 			// related work:
 			// - is a manifestation of article-as-work
-			$articleProprietaryId = $context->getId() . '-' . $article->getIssueId() . '-' . $article->getId();
+			$articleProprietaryId = $context->getId() . '-' . $article->getCurrentPublication()->getData('issueId') . '-' . $article->getId();
 			$relatedArticleIds = array(O4DOI_ID_TYPE_PROPRIETARY => $articleProprietaryId);
-			$doi = $article->getStoredPubId('doi');
+			$doi = $article->getCurrentPublication()->getStoredPubId('doi');
 			if (!empty($doi)) $relatedArticleIds[O4DOI_ID_TYPE_DOI] = $doi;
 			$contentItemNode->appendChild($this->createRelatedNode($doc, 'Work', O4DOI_RELATION_IS_A_MANIFESTATION_OF, $relatedArticleIds));
 			unset($relatedArticleIds);
@@ -341,8 +341,8 @@ class ArticleMedraXmlFilter extends O4DOIXmlFilter {
 		$deployment = $this->getDeployment();
 		$contributorNode = $doc->createElementNS($deployment->getNamespace(), 'Contributor');
 		// Sequence number
-		$seq = $author->getSequence();
-		assert(!empty($seq));
+		$seq = $author->getSequence() ?? 0;
+		$seq++; // Sequences must begin with 1, so bump our internal sequence by 1.
 		$contributorNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'SequenceNumber', $seq));
 		// Contributor role (mandatory)
 		$contributorNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'ContributorRole', O4DOI_CONTRIBUTOR_ROLE_ACTUAL_AUTHOR));

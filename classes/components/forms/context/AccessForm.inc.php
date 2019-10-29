@@ -2,8 +2,8 @@
 /**
  * @file classes/components/form/context/AccessForm.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AccessForm
@@ -14,9 +14,12 @@
  */
 namespace APP\components\forms\context;
 use \PKP\components\forms\FormComponent;
+use \PKP\components\forms\FieldSelect;
 use \PKP\components\forms\FieldOptions;
 
 define('FORM_ACCESS', 'access');
+define('SUBSCRIPTION_OPEN_ACCESS_DELAY_MIN', '1');
+define('SUBSCRIPTION_OPEN_ACCESS_DELAY_MAX', '60');
 
 class AccessForm extends FormComponent {
 	/** @copydoc FormComponent::$id */
@@ -37,6 +40,14 @@ class AccessForm extends FormComponent {
 		$this->successMessage = __('manager.distribution.publishingMode.success');
 		$this->locales = $locales;
 
+		$validDelayedOpenAccessDuration[] = ['value' => 0, 'label' => __('common.disabled')]; 
+		for ($i=SUBSCRIPTION_OPEN_ACCESS_DELAY_MIN; $i<=SUBSCRIPTION_OPEN_ACCESS_DELAY_MAX; $i++) {
+			$validDelayedOpenAccessDuration[] = [
+				'value' => $i,
+				'label' => __('manager.subscriptionPolicies.xMonths', array('x' => $i)),
+			];
+		}
+
 		$this->addField(new FieldOptions('publishingMode', [
 				'label' => __('manager.distribution.publishingMode'),
 				'type' => 'radio',
@@ -47,6 +58,12 @@ class AccessForm extends FormComponent {
 				],
 				'value' => $context->getData('publishingMode'),
 			]))
+			->addField(new FieldSelect('delayedOpenAccessDuration', [
+				'label' => __('about.delayedOpenAccess'),
+				'options' => $validDelayedOpenAccessDuration,
+				'value' => $context->getData('delayedOpenAccessDuration'),
+				'showWhen' => ['publishingMode', PUBLISHING_MODE_SUBSCRIPTION],
+			]))	
 			->addField(new FieldOptions('enableOai', [
 				'label' => __('manager.setup.enableOai'),
 				'description' => __('manager.setup.enableOai.description'),

@@ -3,8 +3,8 @@
 /**
  * @file pages/management/SettingsHandler.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SettingsHandler
@@ -117,9 +117,9 @@ class SettingsHandler extends ManagementHandler {
 
 		// Add forms to the existing settings data
 		$settingsData = $templateMgr->getTemplateVars('settingsData');
-		$settingsData['forms'][$accessForm->id] = $accessForm->getConfig();
-		$settingsData['forms'][$archivingLockssForm->id] = $archivingLockssForm->getConfig();
-		$settingsData['forms'][$archivePnForm->id] = $archivePnForm->getConfig();
+		$settingsData['components'][$accessForm->id] = $accessForm->getConfig();
+		$settingsData['components'][$archivingLockssForm->id] = $archivingLockssForm->getConfig();
+		$settingsData['components'][$archivePnForm->id] = $archivePnForm->getConfig();
 		$templateMgr->assign('settingsData', $settingsData);
 
 		// Hook into the settings templates to add the appropriate tabs

@@ -3,8 +3,8 @@
 /**
  * @file pages/issue/IssueHandler.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IssueHandler
@@ -135,7 +135,7 @@ class IssueHandler extends Handler {
 			'offset' => $offset,
 			'isPublished' => true,
 		);
-		$issues = $issueService->getMany($params);
+		$issues = iterator_to_array($issueService->getMany($params));
 		$total = $issueService->getMax($params);
 
 		$showingStart = $offset + 1;
@@ -299,7 +299,6 @@ class IssueHandler extends Handler {
 		));
 
 		$issueGalleyDao = DAORegistry::getDAO('IssueGalleyDAO');
-		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
 
 		$genreDao = DAORegistry::getDAO('GenreDAO');
 		$primaryGenres = $genreDao->getPrimaryByContextId($journal->getId())->toArray();
@@ -307,10 +306,32 @@ class IssueHandler extends Handler {
 			return $genre->getId();
 		}, $primaryGenres);
 
+		import('classes.submission.Submission'); // import STATUS_ constants
+		$submissionsIterator = Services::get('submission')->getMany([
+			'contextId' => $journal->getId(),
+			'issueIds' => [$issue->getId()],
+			'status' => STATUS_PUBLISHED,
+		]);
+
+		$issueSubmissionsInSection = [];
+		foreach ($submissionsIterator as $submission) {
+			if (!$sectionId = $submission->getCurrentPublication()->getData('sectionId')) {
+				continue;
+			}
+			if (!array_key_exists($sectionId, $issueSubmissionsInSection)) {
+				$section = DAORegistry::getDAO('SectionDAO')->getById($sectionId);
+				$issueSubmissionsInSection[$sectionId] = [
+					'title' => $section->getLocalizedTitle(),
+					'articles' => [],
+				];
+			}
+			$issueSubmissionsInSection[$sectionId]['articles'][] = $submission;
+		}
+
 		$templateMgr->assign(array(
 			'issue' => $issue,
 			'issueGalleys' => $issueGalleyDao->getByIssueId($issue->getId()),
-			'publishedArticles' => $publishedArticleDao->getPublishedArticlesInSections($issue->getId(), true),
+			'publishedSubmissions' => $issueSubmissionsInSection,
 			'primaryGenreIds' => $primaryGenreIds,
 		));
 
@@ -330,20 +351,21 @@ class IssueHandler extends Handler {
 			$templateMgr->assign('issueExpiryPartial', $partial);
 
 			// Partial subscription expiry for articles
-			$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-			$publishedArticlesTemp = $publishedArticleDao->getPublishedArticles($issue->getId());
-
 			$articleExpiryPartial = array();
-			foreach ($publishedArticlesTemp as $publishedArticle) {
-				$partial = $issueAction->subscribedUser($user, $journal, $issue->getId(), $publishedArticle->getId());
-				if (!$partial) $issueAction->subscribedDomain($request, $journal, $issue->getId(), $publishedArticle->getId());
-				$articleExpiryPartial[$publishedArticle->getId()] = $partial;
+			foreach ($issueSubmissions as $issueSubmission) {
+				$partial = $issueAction->subscribedUser($user, $journal, $issue->getId(), $issueSubmission->getId());
+				if (!$partial) $issueAction->subscribedDomain($request, $journal, $issue->getId(), $issueSubmission->getId());
+				$articleExpiryPartial[$issueSubmission->getId()] = $partial;
 			}
 			$templateMgr->assign('articleExpiryPartial', $articleExpiryPartial);
 		}
 
+		$completedPaymentDao = DAORegistry::getDAO('OJSCompletedPaymentDAO');
 		$templateMgr->assign(array(
-			'hasAccess' => !$subscriptionRequired || $issue->getAccessStatus() == ISSUE_ACCESS_OPEN || $subscribedUser || $subscribedDomain
+			'hasAccess' => !$subscriptionRequired ||
+				$issue->getAccessStatus() == ISSUE_ACCESS_OPEN ||
+				$subscribedUser || $subscribedDomain
+				($user && $completedPaymentDao->hasPaidPurchaseIssue($user->getId(), $issue->getId()))
 		));
 
 		import('classes.payment.ojs.OJSPaymentManager');

@@ -4,8 +4,8 @@
 <!--
   * locale/it_IT/locale.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=Translating_OxS
   * Localization strings.
@@ -109,6 +109,8 @@
 	<!-- Common Article Terms -->
 	<message key="article.article">Articolo</message>
 	<message key="article.articles">Articoli</message>
+	<message key="common.publication">Articolo</message>
+	<message key="common.publications">Articoli</message>
 	<message key="article.submissionId">ID della proposta</message>
 	<message key="article.title">Titolo</message>
 	<message key="article.authors">Autori</message>
@@ -165,7 +167,6 @@
 	<message key="submissions.step1">Step 1</message>
 	<message key="submissions.step3">Step 3</message>
 	<message key="submissions.queuedReview">In Revisione</message>
-	<message key="submissions.scheduled">Programmato</message>
 	<message key="submissions.published">Pubblicato</message>
 	<message key="submissions.initial">Iniziale</message>
 	<message key="submissions.proofread">Correzione delle bozze</message>
@@ -895,8 +896,6 @@ Il vostro server supporta mbstring: <strong>{$supportsMBString}</strong>]]></mes
 	<message key="log.author.documentRevised">{$authorName} ha modificato l'articolo {$submissionId}. Il nuovo ID è {$fileId}.</message>
 	<message key="log.review.reviewerUnassigned">A {$reviewerName} è stato tolto l'incarico di revisore della proposta {$submissionId} per il {$round} ciclo di revisione.</message>
 	<message key="log.review.reviewInitiated">È iniziato il {$round} ciclo di revisione per la proposta {$submissionId} assegnata a {$reviewerName}.</message>
-	<message key="log.review.reviewReinitiated">Il {$round} ciclo di revisione, assegnato a {$reviewerName} per la proposta {$submissionId} è riniziato.</message>
-	<message key="log.review.reviewCleared">Il ciclo di review nr. {$round} assegnato a {$reviewerName} per la proposta {$submissionId} è stato portato a termine.</message>
 	<message key="log.review.reviewerRated">{$reviewerName} è stato preso in considerazione per il ciclo di review nr. {$round} della proposta {$submissionId}.</message>
 	<message key="log.review.reviewDueDateSet">La data di scadenza per il ciclo di review nr. {$round} della proposta {$submissionId} assegnata a {$reviewerName} è il {$dueDate}.</message>
 	<message key="log.review.reviewRecommendationSet">È disponibile il parere per il {$round} ciclo di revisione della proposta {$submissionId} assegnata a {$reviewerName}.</message>
@@ -936,7 +935,6 @@ Il vostro server supporta mbstring: <strong>{$supportsMBString}</strong>]]></mes
 
 	<!-- Notification Types -->
 
-	<message key="notification.type.articleSubmitted">&#200; stato proposto un nuovo articolo, "{$title}"></message>
 	<message key="notification.type.editing">Eventi modificati</message>
 	<message key="notification.type.editorDecisionComment">La decisione dell'editor su  "{$title}" &#232; stata commentata.</message>
 	<message key="notification.type.galleyModified">La gabbia di "{$title}" &#232; stata modificata.</message>
@@ -1040,7 +1038,6 @@ Il vostro server supporta mbstring: <strong>{$supportsMBString}</strong>]]></mes
 	<message key="notification.savedIssueMetadata">Metadati della pubblicazione fascicolo salvati</message>
 	<message key="notification.type.assignProductionUser">Per assegnare ad un utente la possibilità di creare gabbia usa il link Assegna nella lista di partecipanti</message>
 	<message key="notification.type.awaitingRepresentations">Gabbie in attesa</message>
-	<message key="notification.type.publicationScheduled">Di questa proposta è stata pianificata la pubblicazione</message>
 	<message key="user.authorization.noContext">Nessuna rivista nel contesto!</message>
 	<message key="user.authorization.invalidIssue">Richiesto un fascicolo non valido</message>
 	<message key="grid.action.createContext">Crea una nuova rivista</message>

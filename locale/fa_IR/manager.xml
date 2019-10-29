@@ -3,8 +3,8 @@
 <!--
   * locale/fa_IR/manager.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=Translating_OxS
   * Credits: https://pkp.sfu.ca/wiki/index.php?title=OJS:_Farsi_(fa_IR)
@@ -326,11 +326,6 @@
 	<message key="manager.statistics.reports.filters.byObject.description">محدودتر کردن نتایج بر اساس نوع (مجله، شماره، مقاله یا نوع فایل) یا شناسه داده</message>
 	<message key="manager.subscriptionPolicies">سیاست‌های اشتراک</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccess">دسترسی آزاد ( با تأخیر)</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription">علی‌رغم دسترسی آزاد تأخیری ، دبیران هنوز می‌توانند مقالات خاصی را به عنوان دسترسی آزاد فوری مشخص کنند.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription1">شماره‌های قبلی این مجله به‌صورت آزاد در دسترس است.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">ماه بعد از انتشار یک شماره مجله</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">لطفاً مدت زمان صحیحی را انتخاب کنید.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">متن زیر در قسمت درباره مجله تحت عنوان دسترسی آزاد تأخیری نمایش داده خواهد شد.</message>
 	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">لطفاً تیک بزنید</message>
 	<message key="manager.subscriptionPolicies.expiry">انقضای اشتراک</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">در صورت انقضای اشتراک دسترسی خوانندگان به تمام مقالات و یا به مقالاتی که بعد از انقضا منتشر شده است بسته می‌شود</message>

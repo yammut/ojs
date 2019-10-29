@@ -4,8 +4,8 @@
 <!--
   * locale/pl_PL/manager.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=OJS:_Polish_(pl_PL)
   * Localization strings.
@@ -372,11 +372,6 @@
 	<message key="manager.setup.porticoTitle">Portico</message>
 	<message key="manager.subscriptionPolicies.authorSelfArchiveDescription">Poniższe zasady autoarchiwizacji tekstów przez autorów będą zamieszczone na stronie "O czasopiśmie".</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccess">Opóźniony otwarty dostęp (open access)</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription">W czasopiśmie z opóźnionym otwartym dostępem (open access), redaktorzy mogą udostępniać natychmiast po opublikowaniu oznaczone w danym numerze artykuły.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription1">Archiwalne numery czasopisma będą udostępniane w sposób otwarty (open access)</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">miesiąc(e) od opublikowania numeru.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Wybierz poprawny okres czasu.</message>
-	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Poniższe zasady opóźnionego otwartego dostępu (open access) będą umieszczone na stronie "O czasopiśmie".</message>
 	<message key="manager.subscriptionPolicies.expiry">Wygaśnięcie subskrypcji</message>
 	<message key="manager.subscriptions">Subskrypcje</message>
 	<message key="manager.individualSubscriptions">Indywidualne subskrypcje</message>

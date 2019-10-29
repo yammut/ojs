@@ -4,8 +4,8 @@
 <!--
   * locale/it_IT/editor.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=Translating_OxS
   * Localization strings.
@@ -212,7 +212,6 @@
 	<message key="grid.action.previewIssue">Anteprima</message>
 	<message key="grid.action.addIssueGalley">Crea una gabbia per tutto il fascicolo</message>
 	<message key="grid.action.setCurrentIssue">Definisce il fascicolo corrente</message>
-	<message key="editor.article.schedulePublication">Pianifica per la pubblicazione</message>
 	<message key="editor.article.removeCoverImageFileNotFound">L'immagine che hai chiesto di cancellare non esiste. Potrebbe essere stata già cancellata. Prova a ricaricare la pagina.</message>
 	<message key="grid.action.removeArticle">Rimuovi articolo dal fascicolo</message>
 	<message key="editor.article.remove.confirm">Se sicuro di voler rimuovere l'articolo da questo fascicolo ? L'articolo sarà disponibile per uscire in un altro fascicolo.</message>

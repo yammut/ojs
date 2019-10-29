@@ -3,8 +3,8 @@
 /**
  * @file classes/plugins/PubObjectsExportPlugin.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PubObjectsExportPlugin
@@ -82,6 +82,15 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 			case 'index':
 				$form->initData();
 				return new JSONMessage(true, $form->fetch($request));
+			case 'statusMessage':
+				$statusMessage = $this->getStatusMessage($request);
+				if ($statusMessage) {
+					$templateMgr = TemplateManager::getManager($request);
+					$templateMgr->assign(array(
+						'statusMessage' => htmlentities($statusMessage),
+					));
+					return new JSONMessage(true, $templateMgr->fetch($this->getTemplateResource('statusMessage.tpl')));
+				}
 		}
 		return parent::manage($args, $request);
 	}
@@ -137,7 +146,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 					fatalError(__('plugins.importexport.common.error.noObjectsSelected'));
 				}
 				if (!empty($selectedSubmissions)) {
-					$objects = $this->getPublishedArticles($selectedSubmissions, $context);
+					$objects = $this->getPublishedSubmissions($selectedSubmissions, $context);
 					$filter = $this->getSubmissionFilter();
 					$objectsFileNamePart = 'articles';
 				} elseif (!empty($selectedIssues)) {
@@ -145,7 +154,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 					$filter = $this->getIssueFilter();
 					$objectsFileNamePart = 'issues';
 				} elseif (!empty($selectedRepresentations)) {
-					$objects = $this->getArticleGalleys($selectedRepresentations, $context);
+					$objects = $this->getArticleGalleys($selectedRepresentations);
 					$filter = $this->getRepresentationFilter();
 					$objectsFileNamePart = 'galleys';
 				}
@@ -234,12 +243,22 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 	/**
 	 * Deposit XML document.
 	 * This must be implemented in the subclasses, if the action is supported.
-	 * @param $objects mixed Array of or single published article, issue or galley
+	 * @param $objects mixed Array of or single published submission, issue or galley
 	 * @param $context Context
 	 * @param $filename Export XML filename
 	 * @return boolean Whether the XML document has been registered
 	 */
 	abstract function depositXML($objects, $context, $filename);
+
+	/**
+	 * Get detailed message of the object status i.e. failure messages.
+	 * Parameters needed have to be in the request object.
+	 * @param $request PKPRequest
+	 * @return string Preformatted text that will be displayed in a div element in the modal
+	 */
+	function getStatusMessage($request) {
+		return null;
+	}
 
 	/**
 	 * Get the submission filter.
@@ -321,7 +340,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 
 	/**
 	 * Get the XML for selected objects.
-	 * @param $objects mixed Array of or single published article, issue or galley
+	 * @param $objects mixed Array of or single published submission, issue or galley
 	 * @param $filter string
 	 * @param $context Context
 	 * @return string XML document.
@@ -351,7 +370,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 	/**
 	 * Mark selected submissions or issues as registered.
 	 * @param $context Context
-	 * @param $objects array Array of published articles, issues or galleys
+	 * @param $objects array Array of published submissions, issues or galleys
 	 */
 	function markRegistered($context, $objects) {
 		foreach ($objects as $object) {
@@ -362,7 +381,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 
 	/**
 	 * Update the given object.
-	 * @param $object Issue|PublishedArticle|ArticleGAlley
+	 * @param $object Issue|Submission|ArticleGalley
 	 */
 	function updateObject($object) {
 		// Register a hook for the required additional
@@ -413,9 +432,8 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 	 * @return array
 	 */
 	function getUnregisteredArticles($context) {
-		// Retrieve all published articles that have not yet been registered.
-		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO'); /* @var $publishedArticleDao PublishedArticleDAO */
-		$articles = $publishedArticleDao->getExportable(
+		// Retrieve all published submissions that have not yet been registered.
+		$articles = Application::getSubmissionDAO()->getExportable(
 			$context->getId(),
 			null,
 			null,
@@ -501,7 +519,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 
 		switch ($objectType) {
 			case 'articles':
-				$objects = $this->getPublishedArticles($args, $context);
+				$objects = $this->getPublishedSubmissions($args, $context);
 				$filter = $this->getSubmissionFilter();
 				$objectsFileNamePart = 'articles';
 				break;
@@ -511,7 +529,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 				$objectsFileNamePart = 'issues';
 				break;
 			case 'galleys':
-				$objects = $this->getArticleGalleys($args, $context);
+				$objects = $this->getArticleGalleys($args);
 				$filter = $this->getRepresentationFilter();
 				$objectsFileNamePart = 'galleys';
 				break;
@@ -576,19 +594,18 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 	}
 
 	/**
-	 * Get published articles from submission IDs.
+	 * Get published submissions from submission IDs.
 	 * @param $submissionIds array
 	 * @param $context Context
 	 * @return array
 	 */
-	function getPublishedArticles($submissionIds, $context) {
-		$publishedArticles = array();
-		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-		foreach ($submissionIds as $submissionId) {
-			$publishedArticle = $publishedArticleDao->getByArticleId($submissionId, $context->getId());
-			if ($publishedArticle) $publishedArticles[] = $publishedArticle;
-		}
-		return $publishedArticles;
+	function getPublishedSubmissions($submissionIds, $context) {
+		$submissions = array_map(function($submissionId) {
+			return Services::get('submission')->get($submissionId);
+		}, $submissionIds);
+		return array_filter($submissions, function($submission) {
+			return $submission->getData('status') === STATUS_PUBLISHED;
+		});
 	}
 
 	/**
@@ -610,14 +627,13 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 	/**
 	 * Get article galleys from gallley IDs.
 	 * @param $galleyIds array
-	 * @param $context Context
 	 * @return array
 	 */
-	function getArticleGalleys($galleyIds, $context) {
+	function getArticleGalleys($galleyIds) {
 		$galleys = array();
 		$articleGalleyDao = DAORegistry::getDAO('ArticleGalleyDAO');
 		foreach ($galleyIds as $galleyId) {
-			$articleGalley = $articleGalleyDao->getById($galleyId, null, $context->getId());
+			$articleGalley = $articleGalleyDao->getById($galleyId);
 			if ($articleGalley) $galleys[] = $articleGalley;
 		}
 		return $galleys;

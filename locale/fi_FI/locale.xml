@@ -4,8 +4,8 @@
 <!--
   * locale/fi_FI/locale.xml
   *
-  * Copyright (c) 2013-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2013-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=Translating_OxS
   * Localization strings.
@@ -103,6 +103,8 @@
 	<!-- Common Article Terms -->
 	<message key="article.article">Artikkeli</message>
 	<message key="article.articles">Artikkelit</message>
+	<message key="common.publication">Artikkeli</message>
+	<message key="common.publications">Artikkelit</message>
 	<message key="article.submissionId">Käsikirjoituksen tunniste</message>
 	<message key="article.title">Otsikko</message>
 	<message key="article.authors">Kirjoittajat</message>
@@ -161,7 +163,6 @@
 	<message key="submissions.step1">Vaihe 1</message>
 	<message key="submissions.step3">Vaihe 3</message>
 	<message key="submissions.queuedReview">Arvioitavana</message>
-	<message key="submissions.scheduled">Ajoitettu</message>
 	<message key="submissions.published">Julkaistu</message>
 	<message key="submissions.initial">Ensimmäinen</message>
 	<message key="submissions.proofread">Oikolue</message>
@@ -923,8 +924,6 @@ Palvelimesi tukee tällä hetkellä mbstringiä: <strong>{$supportsMBString}</st
 	<message key="log.author.documentRevised">{$authorName} on korjannut artikkelia {$submissionId}. Uusi tiedostotunniste on {$fileId}.</message>
 	<message key="log.review.reviewerUnassigned">{$reviewerName} on poistettu käsikirjoituksen {$submissionId} arvioinnista arviointikierroksella {$round}.</message>
 	<message key="log.review.reviewInitiated">{$reviewerName} on aloittanut käsikirjoituksen {$submissionId} arvioinnin kierroksella {$round}.</message>
-	<message key="log.review.reviewReinitiated">{$reviewerName} on aloittanut uudelleen käsikirjoituksen {$submissionId} arvioinnin kierroksella {$round}.</message>
-	<message key="log.review.reviewCleared">{$reviewerName}:n arviointi käsikirjoituksesta {$submissionId} kierroksella {$round} on poistettu.</message>
 	<message key="log.review.reviewerRated">{$reviewerName} on arvosteltu käsikirjoituksen {$submissionId} arvioinnista kierroksella {$round}.</message>
 	<message key="log.review.reviewDueDateSet">Kierroksen {$round} määräpäivä {$reviewerName}:n arvioinnille käsikirjoituksesta {$submissionId} on {$dueDate}.</message>
 	<message key="log.review.reviewRecommendationSet">{$reviewerName} on antanut suosituksen kierroksen {$round} arvioinnista käsikirjoitusta {$submissionId} koskien.</message>
@@ -967,7 +966,6 @@ Palvelimesi tukee tällä hetkellä mbstringiä: <strong>{$supportsMBString}</st
 
 	<!-- Notification Types -->
 
-	<message key="notification.type.articleSubmitted">Uusi artikkeli, "{$title}", on lähetetty.</message>
 	<message key="notification.type.editing">Toimittamiseen liittyvät tapahtumat</message>
 	<message key="notification.type.submissionSubmitted">Uusi artikkeli, "{$title}", on lähetetty.</message>
 	<message key="notification.type.editorDecisionComment">Toimittajan kohdetta "{$title}" koskevaa päätöstä on kommentoitu.</message>
@@ -1028,7 +1026,6 @@ Palvelimesi tukee tällä hetkellä mbstringiä: <strong>{$supportsMBString}</st
 	<message key="editor.issues.futureIssues">Tulevat numerot</message>
 	<message key="reviewer.submission.reviewFormResponse.form.responseRequired">Ole hyvä ja täytä kaikki pakolliset kentät.</message>
 	<message key="navigation.subscriptions">Tilaukset</message>
-	<message key="notification.type.publicationScheduled">Tämä käsikirjoitus on ajoitettu julkaistavaksi.</message>
 	<message key="log.editor.recommendation">{$editorName} tallensi päätöksen ({$decision}) käsikirjoitukselle {$submissionId}.</message>
 	<message key="subscriptions.status.noSubscription">Sinulla ei ole aktiivista tilausta.</message>
 	<message key="reader.purchasePrice">({$currency} {$price})</message>

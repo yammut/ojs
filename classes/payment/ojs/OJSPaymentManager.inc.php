@@ -3,8 +3,8 @@
 /**
  * @file classes/payment/ojs/OJSPaymentManager.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OJSPaymentManager
@@ -254,8 +254,6 @@ class OJSPaymentManager extends PaymentManager {
 					$institutional = false;
 				}
 				if (!$subscription || $subscription->getUserId() != $queuedPayment->getUserId() || $subscription->getJournalId() != $queuedPayment->getContextId()) {
-					// FIXME: Is this supposed to be here?
-					error_log(print_r($subscription, true));
 					return false;
 				}
 				if ($institutional) {

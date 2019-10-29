@@ -3,8 +3,8 @@
 /**
  * @file classes/services/IssueService.php
 *
-* Copyright (c) 2014-2018 Simon Fraser University
-* Copyright (c) 2000-2018 John Willinsky
+* Copyright (c) 2014-2019 Simon Fraser University
+* Copyright (c) 2000-2019 John Willinsky
 * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 *
 * @class IssueService
@@ -52,7 +52,7 @@ class IssueService implements EntityPropertyInterface, EntityReadInterface {
 	 * 		@option string orderDirection
 	 * }
 	 *
-	 * @return array
+	 * @return \Iterator
 	 */
 	public function getMany($args = array()) {
 		$issueListQB = $this->_getQueryBuilder($args);
@@ -62,7 +62,7 @@ class IssueService implements EntityPropertyInterface, EntityReadInterface {
 		$result = $issueDao->retrieveRange($issueListQO->toSql(), $issueListQO->getBindings(), $range);
 		$queryResults = new DAOResultFactory($result, $issueDao, '_fromRow');
 
-		return $queryResults->toArray();
+		return $queryResults->toIterator();
 	}
 
 	/**
@@ -110,7 +110,7 @@ class IssueService implements EntityPropertyInterface, EntityReadInterface {
 			->filterByNumbers($args['numbers'])
 			->filterByYears($args['years']);
 
-		\HookRegistry::call('Issue::getMany::queryBuilder', array($issueListQB, $contextId, $args));
+		\HookRegistry::call('Issue::getMany::queryBuilder', array($issueListQB, $args));
 
 		return $issueListQB;
 	}
@@ -232,12 +232,13 @@ class IssueService implements EntityPropertyInterface, EntityReadInterface {
 					break;
 				case 'articles':
 					$values[$prop] = array();
-					$publishedArticleDao = \DAORegistry::getDAO('PublishedArticleDAO');
-					$publishedArticles = $publishedArticleDao->getPublishedArticles($issue->getId());
-					if (!empty($publishedArticles)) {
-						foreach ($publishedArticles as $article) {
-							$values[$prop][] = \Services::get('submission')->getSummaryProperties($article, $args);
-						}
+					$submissionsIterator = Services::get('submission')->getMany([
+						'contextId' => $issue->getJournalId(),
+						'issueIds' => $issue->getId(),
+						'count' => 1000, // large upper limit
+					]);
+					foreach ($submissionsIterator as $submission) {
+						$values[$prop][] = \Services::get('submission')->getSummaryProperties($submission, $args);
 					}
 					break;
 				case 'sections':
@@ -293,8 +294,6 @@ class IssueService implements EntityPropertyInterface, EntityReadInterface {
 	 * @copydoc \PKP\Services\interfaces\EntityPropertyInterface::getSummaryProperties()
 	 */
 	public function getSummaryProperties($issue, $args = null) {
-		\PluginRegistry::loadCategory('pubIds', true);
-
 		$props = array (
 			'id','_href','title','description','identification','volume','number','year',
 			'datePublished', 'publishedUrl', 'coverImageUrl','coverImageAltText','galleysSummary',
@@ -309,8 +308,6 @@ class IssueService implements EntityPropertyInterface, EntityReadInterface {
 	 * @copydoc \PKP\Services\interfaces\EntityPropertyInterface::getFullProperties()
 	 */
 	public function getFullProperties($issue, $args = null) {
-		\PluginRegistry::loadCategory('pubIds', true);
-
 		$props = array (
 			'id','_href','title','description','identification','volume','number','year','isPublished',
 			'isCurrent','datePublished','dateNotified','lastModified','publishedUrl','coverImageUrl',

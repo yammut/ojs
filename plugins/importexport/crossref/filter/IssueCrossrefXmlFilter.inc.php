@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/crossref/filter/IssueCrossrefXmlFilter.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2000-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2000-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IssueCrossrefXmlFilter
@@ -40,7 +40,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter {
 	//
 	/**
 	 * @see Filter::process()
-	 * @param $pubObjects array Array of Issues or PublishedArticles
+	 * @param $pubObjects array Array of Issues or Submissions
 	 * @return DOMDocument
 	 */
 	function &process(&$pubObjects) {
@@ -63,7 +63,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter {
 		$rootNode->appendChild($bodyNode);
 
 		foreach($pubObjects as $pubObject) {
-			// pubObject is either Issue or PublishedArticle
+			// pubObject is either Issue or Submission
 			$journalNode = $this->createJournalNode($doc, $pubObject);
 			$bodyNode->appendChild($journalNode);
 		}
@@ -121,7 +121,7 @@ class IssueCrossrefXmlFilter extends NativeExportFilter {
 	/**
 	 * Create and return the journal node 'journal'.
 	 * @param $doc DOMDocument
-	 * @param $pubObject object Issue or PublishedArticle
+	 * @param $pubObject object Issue or Submission
 	 * @return DOMElement
 	 */
 	function createJournalNode($doc, $pubObject) {
@@ -192,7 +192,8 @@ class IssueCrossrefXmlFilter extends NativeExportFilter {
 			$journalIssueNode->appendChild($node = $doc->createElementNS($deployment->getNamespace(), 'issue', htmlspecialchars($issue->getNumber(), ENT_COMPAT, 'UTF-8')));
 		}
 		if ($issue->getDatePublished() && $issue->getStoredPubId('doi')) {
-			$journalIssueNode->appendChild($this->createDOIDataNode($doc, $issue->getStoredPubId('doi'), Request::url($context->getPath(), 'issue', 'view', $issue->getBestIssueId($context), null, null, true)));
+			$request = Application::get()->getRequest();
+			$journalIssueNode->appendChild($this->createDOIDataNode($doc, $issue->getStoredPubId('doi'), $request->url($context->getPath(), 'issue', 'view', $issue->getBestIssueId($context), null, null, true)));
 		}
 		return $journalIssueNode;
 	}

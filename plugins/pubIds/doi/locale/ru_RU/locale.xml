@@ -4,8 +4,8 @@
 <!--
   * plugins/pubIds/doi/locale/ru_RU/locale.xml
   *
-  * Copyright (c) 2014-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2014-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization information: https://pkp.sfu.ca/wiki/index.php?title=OJS:_Russian_(ru_RU)
   * Localization strings.
@@ -23,7 +23,7 @@
 	<message key="plugins.pubIds.doi.manager.settings.doiObjectsRequired">Пожалуйста выберите объекты, которым должны быть присвоены DOI.</message>
 	<message key="plugins.pubIds.doi.manager.settings.explainDois">Пожалуйста выберите публикуемые объекты, которые будут иметь присвоенные идентификаторы цифровых объектов (Digital Object Identifier, DOI):</message>
 	<message key="plugins.pubIds.doi.manager.settings.enableIssueDoi">Выпуски</message>
-	<message key="plugins.pubIds.doi.manager.settings.enableSubmissionDoi">Статьи</message>
+	<message key="plugins.pubIds.doi.manager.settings.enablePublicationDoi">Статьи</message>
 	<message key="plugins.pubIds.doi.manager.settings.enableRepresentationDoi">Гранки</message>
 
 	<message key="plugins.pubIds.doi.manager.settings.doiPrefix">Префикс DOI</message>
@@ -46,20 +46,23 @@
 
 	<message key="plugins.pubIds.doi.manager.settings.doiReassign">Переприсвоить DOI</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiReassign.description">Если вы измените вашу конфигурацию DOI, то она не затронет DOI, которые уже были присвоены. После сохранения конфигурации DOI используйте эту кнопку, чтобы удалить все существующие DOI для того, чтобы новые настройки повлияли на существующие объекты.</message>
-	<message key="plugins.pubIds.doi.manager.settings.doiReassign.confirm">Вы уверены, что хотите удалить все существующие DOI?</message>	
+	<message key="plugins.pubIds.doi.manager.settings.doiReassign.confirm">Вы уверены, что хотите удалить все существующие DOI?</message>
 
 
 	<!-- форма метаданных -->
 	<message key="plugins.pubIds.doi.editor.doi">DOI</message>
+	<message key="plugins.pubIds.doi.editor.doi.assignDoi">Назначить</message>
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeIssue">выпуску</message>
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeSubmission">статье</message>
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeRepresentation">гранке</message>
 	<message key="plugins.pubIds.doi.editor.customSuffixMissing">DOI не может быть присвоен, так как отсутствует пользовательский суффикс.</message>
+	<message key="plugins.pubIds.doi.editor.missingIssue">Вы не можете сгенерировать DOI, пока эта публикация не будет назначена в конкретный выпуск.</message>
+	<message key="plugins.pubIds.doi.editor.missingParts">Вы не можете сгенерировать DOI, так как для одной или нескольких частей шаблона DOI не хватает данных. Вам может быть необходимо назначить публикацию в конкретный выпуск, задать ID издателя или ввести номера страниц.</message>
 	<message key="plugins.pubIds.doi.editor.patternNotResolved">DOI не может быть присвоен, так как он содержит не замененный шаблон.</message>
 	<message key="plugins.pubIds.doi.editor.canBeAssigned">Вы видите как будет выглядеть DOI. Поставьте галочку и сохраните форму для присвоения DOI.</message>
 	<message key="plugins.pubIds.doi.editor.assigned"> DOI присвоен {$pubObjectType}.</message>
 	<message key="plugins.pubIds.doi.editor.doiSuffixCustomIdentifierNotUnique">Заданный суффикс DOI уже используется для другого опубликованного элемента. Пожалуйста, введите уникальный суффикс DOI для каждого элемента.</message>
-	<message key="plugins.pubIds.doi.editor.clearObjectsDoi">Удалить DOI</message>
+	<message key="plugins.pubIds.doi.editor.clearObjectsDoi">Удалить</message>
 	<message key="plugins.pubIds.doi.editor.clearObjectsDoi.confirm">Вы уверены, что хотите удалить существующий DOI?</message>
 	<message key="plugins.pubIds.doi.editor.clearIssueObjectsDoi">Удалить DOI у объектов выпуска</message>
 	<message key="plugins.pubIds.doi.editor.clearIssueObjectsDoi.confirm">Вы уверены, что хотите удалить существующие DOI у объектов выпуска?</message>
@@ -69,4 +72,9 @@
 	<message key="plugins.pubIds.doi.editor.assignDoi.emptySuffix">DOI не может быть присвоен, так как отсутствует пользовательский суффикс.</message>
 	<message key="plugins.pubIds.doi.editor.assignDoi.pattern">DOI {$pubId} не может быть присвоен, так как он содержит не замененный шаблон.</message>
 	<message key="plugins.pubIds.doi.editor.assignDoi.assigned">DOI {$pubId} был присвоен.</message>
+	<message key="plugins.pubIds.doi.editor.missingPrefix">DOI должен начинаться с {$doiPrefix}.</message>
+	<message key="plugins.pubIds.doi.editor.preview.publication">DOI для этой публикации будет {$doi}.</message>
+	<message key="plugins.pubIds.doi.editor.preview.publication.none">DOI не был присвоен этой публикации.</message>
+	<message key="plugins.pubIds.doi.editor.preview.galleys">Гранка: {$galleyLabel}</message>
+	<message key="plugins.pubIds.doi.editor.preview.objects">Элемент</message>
 </locale>

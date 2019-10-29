@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/webFeed/WebFeedPlugin.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WebFeedPlugin
@@ -62,7 +62,7 @@ class WebFeedPlugin extends GenericPlugin {
 	 */
 	public function callbackAddLinks($hookName, $args) {
 		// Only page requests will be handled
-		$request = Application::getRequest();
+		$request = Application::get()->getRequest();
 		if (!is_a($request->getRouter(), 'PKPPageRouter')) return false;
 
 		$templateManager =& $args[0];

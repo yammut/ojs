@@ -3,8 +3,8 @@
 /**
  * @file classes/subscription/IndividualSubscriptionDAO.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IndividualSubscriptionDAO
@@ -457,7 +457,7 @@ class IndividualSubscriptionDAO extends SubscriptionDAO {
 	 * @param $journalId int
 	 * @param $check int Check using either start date, end date, or both (default)
 	 * @param $checkDate date (YYYY-MM-DD) Use this date instead of current date
-	 * @return int
+	 * @return boolean
 	 */
 	function isValidIndividualSubscription($userId, $journalId, $check = SUBSCRIPTION_DATE_BOTH, $checkDate = null) {
 		if (empty($userId) || empty($journalId)) {
@@ -500,7 +500,7 @@ class IndividualSubscriptionDAO extends SubscriptionDAO {
 			)
 		);
 
-		if ($result->RecordCount() != 0) $returner = $result->fields[0];
+		if ($result->RecordCount() != 0) $returner = (boolean) $result->fields[0];
 		else $returner = false;
 
 		$result->Close();

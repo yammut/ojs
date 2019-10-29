@@ -1,8 +1,8 @@
 {**
  * plugins/generic/webFeed/templates/rss.tpl
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RSS feed template
@@ -57,22 +57,22 @@
 
 		<items>
 			<rdf:Seq>
-			{foreach name=sections from=$publishedArticles item=section key=sectionId}
+			{foreach name=sections from=$publishedSubmissions item=section key=sectionId}
 				{foreach from=$section.articles item=article}
-					<rdf:li rdf:resource="{url page="article" op="view" path=$article->getBestArticleId()}"/>
+					<rdf:li rdf:resource="{url page="article" op="view" path=$article->getBestId()}"/>
 				{/foreach}{* articles *}
 			{/foreach}{* sections *}
 			</rdf:Seq>
 		</items>
 	</channel>
 
-{foreach name=sections from=$publishedArticles item=section key=sectionId}
+{foreach name=sections from=$publishedSubmissions item=section key=sectionId}
 	{foreach from=$section.articles item=article}
-		<item rdf:about="{url page="article" op="view" path=$article->getBestArticleId()}">
+		<item rdf:about="{url page="article" op="view" path=$article->getBestId()}">
 
 			{* required elements *}
 			<title>{$article->getLocalizedTitle()|strip|escape:"html"}</title>
-			<link>{url page="article" op="view" path=$article->getBestArticleId()}</link>
+			<link>{url page="article" op="view" path=$article->getBestId()}</link>
 
 			{* optional elements *}
 			{if $article->getLocalizedAbstract()}

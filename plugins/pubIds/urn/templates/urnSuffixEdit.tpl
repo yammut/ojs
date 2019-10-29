@@ -1,8 +1,8 @@
 {**
  * plugins/pubIds/urn/templates/urnSuffixEdit.tpl
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Edit custom URN suffix for an object (issue, submission, file)
@@ -55,9 +55,9 @@
 {/if}
 {* issue pub object *}
 {if $pubObjectType == 'Issue'}
-	{assign var=enableSubmissionURN value=$pubIdPlugin->getSetting($currentContext->getId(), "enableSubmissionURN")}
+	{assign var=enablePublicationURN value=$pubIdPlugin->getSetting($currentContext->getId(), "enablePublicationURN")}
 	{assign var=enableRepresentationURN value=$pubIdPlugin->getSetting($currentContext->getId(), "enableRepresentationURN")}
-	{if $enableSubmissionURN || $enableRepresentationURN}
+	{if $enablePublicationURN || $enableRepresentationURN}
 		{if !$formArea}
 			{assign var="formAreaTitle" value="plugins.pubIds.urn.editor.urn"}
 		{else}

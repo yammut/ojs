@@ -3,8 +3,8 @@
 <!--
   * dbscripts/xml/upgrade.xml
   *
-  * Copyright (c) 2014-2018 Simon Fraser University
-  * Copyright (c) 2003-2018 John Willinsky
+  * Copyright (c) 2014-2019 Simon Fraser University
+  * Copyright (c) 2003-2019 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Upgrade descriptor file.
@@ -53,6 +53,13 @@
 
 	<upgrade minversion="2.4.0.0" maxversion="3.1.1.9">
 		<data file="dbscripts/xml/upgrade/3.1.2_preupdate_user_author_names.xml" condition="return $installer->columnExists('users', 'first_name');" />
+	</upgrade>
+
+	<upgrade minversion="2.4.0.0" maxversion="3.1.9.9">
+		<code function="migrateSubmissionCoverImages" />
+		<data file="dbscripts/xml/upgrade/3.2.0_preupdate_email_templates.xml" />
+		<data file="dbscripts/xml/upgrade/3.2.0_preupdate_versioning.xml" />
+		<data file="dbscripts/xml/upgrade/3.2.0_preupdate_last_activity.xml" />
 	</upgrade>
 
 	<!-- PKP schema components -->
@@ -132,6 +139,7 @@
 		<code function="provideSupplementaryFilesForReview" />
 		<code function="setFileUploader" />
 		<code function="setFileName" />
+		<data file="dbscripts/xml/upgrade/3.0.1_update.xml" />
 		<data file="dbscripts/xml/upgrade/3.0.0_postupdate.xml" />
 		<data file="dbscripts/xml/upgrade/3.0.0_pubId_settings.xml" />
 		<data file="dbscripts/xml/upgrade/3.0.0_postupgrade_galley_files.xml" />
@@ -196,8 +204,9 @@
 		<data file="dbscripts/xml/upgrade/3.1.0_galley_settings.xml" condition="return $installer->tableExists('article_galley_settings');" />
 		<data file="dbscripts/xml/upgrade/3.1.0_update.xml" />
 		<code function="repairImageAssociations" condition="return $installer->tableExists('submission_html_galley_images');" />
-		<code function="installEmailTemplate" key="EDITOR_DECISION_INITIAL_DECLINE" locales="en_US" />
-		<code function="installEmailTemplate" key="EDITOR_RECOMMENDATION" locales="en_US" />
+		<code function="installEmailTemplate" key="EDITOR_DECISION_INITIAL_DECLINE" locales="en_US,ar_IQ,cs_CZ,da_DK,de_DE,el_GR,es_ES,fa_IR,fi_FI,fr_CA,fr_FR,it_IT,nl_NL,pl_PL,pt_PT,ru_RU,sl_SI,sv_SE,tr_TR" />
+		<code function="installEmailTemplate" key="EDITOR_RECOMMENDATION" locales="en_US,ar_IQ,cs_CZ,da_DK,de_DE,el_GR,es_ES,fa_IR,fi_FI,fr_CA,fr_FR,it_IT,nl_NL,pl_PL,pt_PT,ru_RU,sl_SI,sv_SE,tr_TR" />
+
 		<note file="docs/release-notes/README-3.1.0" />
 	</upgrade>
 
@@ -222,21 +231,25 @@
 		<note file="docs/release-notes/README-3.1.2" />
 	</upgrade>
 
-	<upgrade minversion="2.4.0.0" maxversion="3.1.2.9">
-		<data file="dbscripts/xml/upgrade/3.2.0_update.xml" />
-		<data file="dbscripts/xml/upgrade/3.2.0_setting_type.xml" />
+	<upgrade minversion="2.4.0.0" maxversion="3.1.1.4">
+		<data file="dbscripts/xml/upgrade/event_log_oneclickuserid.xml" />
+	</upgrade>
+
+	<upgrade minversion="2.4.0.0" maxversion="3.1.9.9">
 		<data file="dbscripts/xml/upgrade/3.2.0_stylesheet.xml" />
 		<data file="dbscripts/xml/upgrade/3.2.0_archiving_settings.xml" />
+		<data file="dbscripts/xml/upgrade/3.2.0_update.xml" />
+		<data file="dbscripts/xml/upgrade/3.2.0_navigation_menu_items_locale_change.xml" />
 		<code function="migrateSiteLocales" />
 		<code function="migrateSidebarBlocks" />
 		<code function="migrateSiteStylesheet" />
 		<code function="migrateMetadataSettings" />
 		<code function="createLicenseTerms" />
+		<code function="installEmailTemplate" key="REVIEW_REINSTATE" locales="en_US" />
+		<code function="changeUserRolesAndStageAssignmentsForStagePermitSubmissionEdit" />
+		<data file="dbscripts/xml/upgrade/3.2.0_versioning.xml" />
+		<data file="dbscripts/xml/upgrade/3.2.0_last_activity.xml" />
 		<note file="docs/release-notes/README-3.2.0" />
-	</upgrade>
-
-	<upgrade minversion="2.4.0.0" maxversion="3.1.1.4">
-		<data file="dbscripts/xml/upgrade/event_log_oneclickuserid.xml" />
 	</upgrade>
 
 	<!-- update plugin configuration - should be done as the final upgrade task -->

@@ -1,8 +1,8 @@
 {**
  * plugins/oaiMetadataFormats/marc/record.tpl
  *
- * Copyright (c) 2013-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2013-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * MARC-formatted metadata record for an article
@@ -69,7 +69,7 @@
 		</varfield>
 	{/foreach}
 	<varfield id="856" i1="4" i2="0">
-		<subfield label="u">{url journal=$journal->getPath() page="article" op="view" path=$article->getBestArticleId()|escape}</subfield>
+		<subfield label="u">{url journal=$journal->getPath() page="article" op="view" path=$article->getBestId()|escape}</subfield>
 	</varfield>
 
 	<varfield id="786" i1="0" i2=" ">

@@ -3,8 +3,8 @@
 /**
  * @file classes/journal/JournalDAO.inc.php
  *
- * Copyright (c) 2014-2018 Simon Fraser University
- * Copyright (c) 2003-2018 John Willinsky
+ * Copyright (c) 2014-2019 Simon Fraser University
+ * Copyright (c) 2003-2019 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalDAO
@@ -37,7 +37,7 @@ class JournalDAO extends ContextDAO {
 	/** @var array Maps schema properties for the primary table to their column names */
 	var $primaryTableColumns = [
 		'id' => 'journal_id',
-		'path' => 'path',
+		'urlPath' => 'path',
 		'enabled' => 'enabled',
 		'seq' => 'seq',
 		'primaryLocale' => 'primary_locale',
@@ -73,7 +73,7 @@ class JournalDAO extends ContextDAO {
 	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
 	 */
 	function deleteAllPubIds($journalId, $pubIdType) {
-		$pubObjectDaos = array('IssueDAO', 'ArticleDAO', 'ArticleGalleyDAO');
+		$pubObjectDaos = array('IssueDAO', 'SubmissionDAO', 'ArticleGalleyDAO');
 		foreach($pubObjectDaos as $daoName) {
 			$dao = DAORegistry::getDAO($daoName);
 			$dao->deleteAllPubIds($journalId, $pubIdType);
@@ -125,5 +125,3 @@ class JournalDAO extends ContextDAO {
 		return false;
 	}
 }
-
-
